@@ -1,3 +1,11 @@
 .Rproj.user
 .Rhistory
 .RData
+*-concordance.tex
+*.log
+*.RData
+*.rdx
+*.rdb
+*.synctex.gz
+vignettes/cache
+vignettes/figure
