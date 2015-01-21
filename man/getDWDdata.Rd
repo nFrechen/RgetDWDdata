@@ -42,6 +42,7 @@ Nanu Frechen
 }
 \note{
 Bei einigen Messstationen kann die Datenstruktur inkonsistent sein und deshalb nicht von dieser Funktion eingelesen werden. Darüber hinaus ändert der DWD manchmal seine Datenstrukturen, was ein Anpassen dieser Funktion erfordert. Wenn Sie inkonsistenzen entdecken informieren sie den Maintainer dieses Pakets (\url{mailto: nanu.frechen@b-tu.de}).
+Die Stationen Aachen, Berlin-Dahlem (LFAG), Karlsruhe, Leuchtturm Alte Weser und Rostock-Warnemünde sind bekannt Fehler beim herunterladen zu erzeugen (siehe Beispiel in \code{\link{getDWDstations}}).
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

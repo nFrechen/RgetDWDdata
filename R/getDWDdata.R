@@ -1,9 +1,9 @@
 getDWDstations <- function(){
 	#library("XML") # not needed in package
 	DWDstationenURL <- "http://www.dwd.de/sid_gCpjSTGJDhT7rZvV38t3vSJWnnQc1HLyFcD46pL789crw0MpqGrg!295356740!-364271037!1385038953230/bvbw/appmanager/bvbw/dwdwwwDesktop?_nfpb=true&_pageLabel=dwdwww_result_page&portletMasterPortlet_i1gsbDocumentPath=Navigation%2FOeffentlichkeit%2FKlima__Umwelt%2FKlimadaten%2Fkldaten__kostenfrei%2Fstations_C3_BCbersicht__tabelle__node.html%3F__nnn%3Dtrue"
-	
-	stationen <- readHTMLTable(DWDstationenURL, stringsAsFactors = FALSE, which=7, skip.rows=1, header=TRUE)
-	return(stationen)
+	Stationen <- readHTMLTable(DWDstationenURL, stringsAsFactors = FALSE, which=7, skip.rows=1, header=TRUE, colClasses = c("character", "character", "character", "character", "numeric", "character", "character", "character", "numeric"))
+	colnames(Stationen) <- sub("\n\n", " ", colnames(Stationen))
+	return(Stationen)
 }
 
 
