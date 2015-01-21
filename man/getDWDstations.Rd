@@ -34,13 +34,37 @@ Nanu Frechen
 %%  ~~further notes~~
 %}
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
 \code{\link{getDWDdata}}, \code{\link{updateDWDdata}}
 }
 \examples{
-getDWDstations()
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
+# Stationsliste herunterladen:
+Stationen <- getDWDstations()
+View(Stationen)
+
+
+# Stationen nach Länge der Messreihe sortieren:
+Stationen$"Länge Messreihe (Jahre)" <- 
+	year(Sys.time()) - as.numeric(Stationen$"Beginn Klimareihe")
+View(Stationen[order(Stationen$"Länge Messreihe (Jahre)"),])
+
+
+# aktuelle Daten aller Stationen herunterladen:
+DWDdata <- list()
+for(i in (1:length(Stationen$Stationsname))){
+	DWDdata[[Stationen$Stationsname[i]]] <- 
+		try(getDWDdata(Stationen$"Stations-Kennziffer"[i],
+			Metadaten = T))
+}
+
+
+# Struktur der erzeugten Liste anzeigen:
+str(DWDdata, 1, vec.len=0, give.attr = FALSE)
+
+
+# Fehlerhafte Stationen aus der Liste nehmen:
+Fehlerhaft <- which(lapply(DWDdata, class)=="try-error")
+print(Fehlerhaft)
+Stationen <- Stationen[-Fehlerhaft,]
 }
