@@ -1,38 +1,24 @@
 \name{getDWDstations}
 \alias{getDWDstations}
-%- Also NEED an '\alias' for EACH other topic documented here.
-\title{
-Lädt die Liste verfügbarer Wetterstationen des DWD herunter 
-}
+\title{Lädt die Liste verfügbarer Wetterstationen des DWD herunter}
 \description{
 Die Liste enthält Stationsnamen, Stations-Kennziffer, Stationshöhe, geografische Breite und Länge und den Beginn der Klimareihe.
 }
 \usage{
 getDWDstations()
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
 Braucht keine Argumente
 }
-%\details{
-%%  ~~ If necessary, more details than the description above ~~
-%}
-%\value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-%}
+
 \references{
 Quelle der Daten: \url{http://www.dwd.de}
+
+Die Stationsliste wird von \href{http://www.dwd.de/sid_gCpjSTGJDhT7rZvV38t3vSJWnnQc1HLyFcD46pL789crw0MpqGrg!295356740!-364271037!1385038953230/bvbw/appmanager/bvbw/dwdwwwDesktop?_nfpb=true&_pageLabel=dwdwww_result_page&portletMasterPortlet_i1gsbDocumentPath=Navigation/Oeffentlichkeit/Klima__Umwelt/Klimadaten/kldaten__kostenfrei/stations_C3_BCbersicht__tabelle__node.html?F__nnn=true}{dieser url} heruntergeladen.
 }
 \author{
 Nanu Frechen
 }
-%\note{
-%%  ~~further notes~~
-%}
 
 
 \seealso{
