@@ -46,11 +46,23 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE){
 		# letztes Datum 1.Datensatz
 		letztesDatum <- historisch$Mess_Datum[ nrow(historisch) ]
 		
+		# erstes Datum 2.Datensatz
+		erstesDatum <- aktuell$Daten$Mess_Datum[1]
+		
 		# ergibt Zeilennummer von letztesDatum im aktuellen Datensatz
 		zl.nr <- which(letztesDatum==aktuell$Daten$Mess_Datum)
 		
+		# Am Jahresanfang fehlen manchmal ein paar Daten:
+		if(length(zl.nr)==0){
+			zl.nr=0
+			Fehltage <- seq(letztesDatum+days(1), erstesDatum-days(1), 1)
+			indexFehltage <- nrow(historisch)+1:length(Fehltage)
+			historisch[indexFehltage,1:2] <- data.frame(historisch$Stations_ID[1], Fehltage)
+		} 
+		
 		# verbindet 1. und 2. Datensatz
-		aktuell$Daten <- rbind(historisch,aktuell$Daten[(zl.nr+1):nrow(aktuell$Daten) , ])
+		aktuell$Daten <- 
+			test <- rbind(historisch,aktuell$Daten[(zl.nr+1):nrow(aktuell$Daten) , ])
 		if(Metadaten){
 			return(aktuell)
 		}else{
