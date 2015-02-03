@@ -7,9 +7,10 @@
 
 \begin{document}
 
-<<settings, message=FALSE>>=
+<<settings, include=FALSE, message=FALSE>>=
 library("HydroToolbox")
-opts_chunk$set(dpi=300, tidy=TRUE, cache=TRUE, dev="png", error=FALSE, warning=FALSE)
+library("knitr")
+opts_chunk$set(dpi=300, tidy=TRUE, cache=TRUE, dev="png", fig.pos="h", error=FALSE, warning=FALSE)
 @
 
 \section{Analyse von Einzelstationen}
@@ -122,6 +123,41 @@ for(index in order(Stationen$Stationshöhe)[c(1,4,5,6, 72:75)]){
 legend("bottomright", c("mit Niederschlag", "ohne Niederschlag"), col=c("blue", "gray"), pch=20)
 @
 
+\clearpage{}
+\section{Grasreferenzverdunstung}
 
+<<ET0>>=
+# Klimadaten herunterladen:
+#Cottbus <- getDWDdata("Cottbus", historisch = NA, Metadaten = T)
+Cottbus <- KlimadatenCottbus
+
+Temp <- Cottbus$Daten$LUFTTEMPERATUR
+Datum <- Cottbus$Daten$Mess_Datum
+Sonnenschein <- Cottbus$Daten$SONNENSCHEINDAUER
+U <- Cottbus$Daten$REL_FEUCHTE       
+Wind <- Cottbus$Daten$WINDGESCHWINDIGKEIT
+Wind_h <- 16 #m
+Breitengrad <- tail(Cottbus$Metadaten$Geogr.Breite, 1)
+Niederschlag <- Cottbus$Daten$NIEDERSCHLAGSHOEHE
+
+# Grasreferenzverdunstung berechnen:
+ET0 <- calcET0(Temp, Datum, Sonnenschein, U, Wind, Wind_h, Breitengrad)
+@
+
+Zeitreihe für das letze Jahr
+<<Jahresverlauf-ET0, fig.cap="Jahresverlauf der Grasreferenzverdunstung">>=
+index <- (length(Datum)-365):length(Datum)
+plot(Datum[index], ET0[index], type="l")
+@
+<<Jahresverlauf-WBilanz, fig.cap="Jahresverlauf der klimatischen Wasserbilanz">>=
+plot(Datum[index], Niederschlag[index]-ET0[index], type="l")
+@
+Streudiagriamm für die gesamte Messperiode
+<<Streudiagramm-ET0, fig.cap="Streudiagramm Grasreferenzverdunstung im Jahresverlauf">>=
+plot(yday(Datum), ET0, pch=20, cex=0.2)
+@
+<<Streudiagramm-WBilanz, fig.cap="Streudiagramm klimatische Wasserbilanz im Jahresverlauf">>=
+plot(yday(Datum), Niederschlag-ET0, pch=20, cex=0.2)
+@
 
 \end{document}

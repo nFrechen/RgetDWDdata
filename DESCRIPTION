@@ -3,7 +3,7 @@ Type: Package
 Title: A collection of tools useful for hydrological calculations
 Version: 0.1
 Date: 2015-01-09
-Author: Nanu Frechen, Egbert Gassert, Ina Pohle, Tobias Recke
+Author: Nanu Frechen, Egbert Gassert, Sabine Schümberg, Ina Pohle, Tobias Recke
 Maintainer: Nanu Frechen <nanu.frechen@b-tu.de>
 Description: A collection of tools useful for hydrological calculations
 License: GPL-2
