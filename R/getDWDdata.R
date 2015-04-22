@@ -44,20 +44,20 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE){
 		# historisch und aktuell zusammenfuegen
 		
 		# letztes Datum 1.Datensatz
-		letztesDatum <- historisch$Mess_Datum[ nrow(historisch) ]
+		letztesDatum <- historisch$MESS_DATUM[ nrow(historisch) ]
 		
 		# erstes Datum 2.Datensatz
-		erstesDatum <- aktuell$Daten$Mess_Datum[1]
+		erstesDatum <- aktuell$Daten$MESS_DATUM[1]
 		
 		# ergibt Zeilennummer von letztesDatum im aktuellen Datensatz
-		zl.nr <- which(letztesDatum==aktuell$Daten$Mess_Datum)
+		zl.nr <- which(letztesDatum==aktuell$Daten$MESS_DATUM)
 		
 		# Am Jahresanfang fehlen manchmal ein paar Daten:
 		if(length(zl.nr)==0){
 			zl.nr=0
 			Fehltage <- seq(letztesDatum+days(1), erstesDatum-days(1), 1)
 			indexFehltage <- nrow(historisch)+1:length(Fehltage)
-			historisch[indexFehltage,1:2] <- data.frame(historisch$Stations_ID[1], Fehltage)
+			historisch[indexFehltage,1:2] <- data.frame(historisch$STATIONS_ID[1], Fehltage)
 		} 
 		
 		# verbindet 1. und 2. Datensatz
@@ -106,11 +106,14 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE){
 	# letzte Zeile loeschen und Spalte loeschen
 	returnData$Daten <- returnData$Daten[-nrow(returnData$Daten),-ncol(returnData$Daten)]
 	
+	# Alle Kopfzeilen in Großbuchstaben
+	colnames(returnData$Daten) <- toupper(colnames(returnData$Daten))
+	
 	# Datumsspalte von character zu Datum umwandeln
-	returnData$Daten$Mess_Datum <- as.Date(as.character(returnData$Daten$Mess_Datum), format="%Y%m%d")
+	returnData$Daten$MESS_DATUM <- as.Date(as.character(returnData$Daten$MESS_DATUM), format="%Y%m%d")
 	
 	# Sich wiederholende character Strings in Faktoren umwandeln:
-	returnData$Daten$Stations_ID <- as.factor(returnData$Daten$Stations_ID)
+	returnData$Daten$STATIONS_ID <- as.factor(returnData$Daten$STATIONS_ID)
 	
 	if(Metadaten){
 		#---- Fehldaten einlesen ----
@@ -150,7 +153,7 @@ updateDWDdata <- function(Datensatz){
 	if(names(Datensatz[1])=="Metadaten"){
 		Messstelle <- tail(Datensatz$Metadaten$Online_id,1)
 	}else{
-		if(names(Datensatz[1])=="Stations_ID"){
+		if(names(Datensatz[1])=="STATIONS_ID"){
 			stop("Der Datensatz kann nur aktualisiert werden, wenn er mit Metadaten heruntergeladen wurde")
 		}else{
 			stop("Der uebergebene Datensatz hat nicht (mehr) die Struktur eines DWD-Datensatzes")
@@ -163,21 +166,21 @@ updateDWDdata <- function(Datensatz){
 	# historisch und aktuell zusammenfuegen
 	
 	# letztes Datum 1.Datensatz
-	letztesDatum <- tail(Datensatz$Daten$Mess_Datum, 1)
+	letztesDatum <- tail(Datensatz$Daten$MESS_DATUM, 1)
 	
 	# ergibt Zeilennummer von letztesDatum im aktuellen Datensatz
-	AnfangAktuell <- which(letztesDatum==aktuell$Mess_Datum)
+	AnfangAktuell <- which(letztesDatum==aktuell$MESS_DATUM)
 	
 	# wenn des Ende der bestehenden Daten vor dem Anfang der aktuellen Daten liegt, muessen noch Daten aus der historischen Datei hinzugefuegt werden:
 	if(length(AnfangAktuell)==0) {
 		historisch <- getDWDdata(Messstelle, historisch=TRUE, Metadaten=FALSE)
 		
 		# die historischen Daten muessen beginnen mit:
-		AnfangHistorisch <- which(letztesDatum==historisch$Mess_Datum)
+		AnfangHistorisch <- which(letztesDatum==historisch$MESS_DATUM)
 		# mit den bestehenden Daten zusammenfuegen
 		Datensatz$Daten <- rbind(Datensatz$Daten, historisch[(AnfangHistorisch+1):nrow(historisch), ])
 		# neuer Anfang fuer die aktuellen Daten:
-		AnfangAktuell <- which(tail(Datensatz$Daten$Mess_Datum, 1) == aktuell$Mess_Datum)
+		AnfangAktuell <- which(tail(Datensatz$Daten$MESS_DATUM, 1) == aktuell$MESS_DATUM)
 	}
 	
 	# verbindet 1. und 2. Datensatz
