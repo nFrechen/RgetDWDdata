@@ -1,9 +1,21 @@
 RgetDWDdata
 ===========
 
-R function to download daily climate data from the DWD (german weather service)
+R function to download daily climate data from the DWD (German Weather Service)
 
 R Funktion zum herunterladen von Tageswerten der Klimadaten des DWD (Deutscher Wetter Dienst)
+
+*************
+## Installation
+In order to install from github you need the ```devtools``` package:
+```R
+install.packages("devtools")
+```
+With this you can install the ```RgetDWDdata``` package:
+```R
+library(devtools)
+install_github("nFrechen/RgetDWDdata")
+```
 
 
 
