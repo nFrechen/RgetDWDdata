@@ -1,16 +1,16 @@
-\name{HydroToolbox-package}
-\alias{HydroToolbox-package}
-\alias{HydroToolbox}
+\name{RgetDWDdata-package}
+\alias{RgetDWDdata-package}
+\alias{RgetDWDdata}
 \docType{package}
 \title{
-A collection of tools useful for hydrological calculations
+R functions to download data from the DWD (German Weather Service)
 }
 \description{
 Dieses Paket enthält Funktionen zum herunterladen von DWD (Deutscher Wetterdienst) Klimadaten und zum Berechnen von hydrologischen Kennwerten und Wasserhaushaltsgrößen.
 }
 \details{
 \tabular{ll}{
-Package: \tab HydroToolbox\cr
+Package: \tab RgetDWDdata\cr
 Type: \tab Package\cr
 Version: \tab 0.1\cr
 Date: \tab 2015-01-09\cr
