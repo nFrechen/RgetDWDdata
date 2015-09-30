@@ -77,7 +77,7 @@ DWDdata <- DWDdata[-Fehlerhaft]
 Vergleich der Sonnenscheindauer (Abbildung \ref{fig:Vergleich-Sonnenscheindauer}, animierte Grafik)
 <<Vergleich-Sonnenscheindauer, fig.cap="Vergleich Sonnenscheindauer", fig.keep='last', fig.height=8>>=
 layout(matrix(1:9, ncol=3))
-for(index in c(32,37,61, 69,72,75, 56, 34, 36)){
+for(index in c(30,32,34,35,51,56,64,67,70)){
 	with(tail(DWDdata[[Stationen$Stationsname[index]]]$Daten, 365*10),{
 		plot(yday(Mess_Datum), SONNENSCHEINDAUER, pch=20, cex=0.1, main=paste("Sonnenscheindauer\n", Stationen$Stationsname[index]), ylim=c(0,18))
 	})
@@ -151,6 +151,7 @@ plot(Datum[index], ET0[index], type="l")
 @
 <<Jahresverlauf-WBilanz, fig.cap="Jahresverlauf der klimatischen Wasserbilanz">>=
 plot(Datum[index], Niederschlag[index]-ET0[index], type="l")
+abline(h=0)
 @
 Streudiagriamm für die gesamte Messperiode
 <<Streudiagramm-ET0, fig.cap="Streudiagramm Grasreferenzverdunstung im Jahresverlauf">>=
@@ -158,6 +159,7 @@ plot(yday(Datum), ET0, pch=20, cex=0.2)
 @
 <<Streudiagramm-WBilanz, fig.cap="Streudiagramm klimatische Wasserbilanz im Jahresverlauf">>=
 plot(yday(Datum), Niederschlag-ET0, pch=20, cex=0.2)
+abline(h=0, col="red", lwd=2)
 @
 
 \end{document}

@@ -33,7 +33,10 @@ Für Wasser muss die Lufttemperatur zwischen -45°C und +65°C liegen. Für Eis 
 Temp_Wasser <- -45:65 #°C
 Temp_Eis <- -65:0 # °C
 
-plot(Temp_Wasser, es(Temp_Wasser), type="l", col="blue", xlim=c(-65,65), lwd=3, xlab="Temperatur [°C]", ylab="Sättigungsdampfdruck [hPa]", main="Sättigungsdampfdruck Kurve")
+plot(Temp_Wasser, es(Temp_Wasser), type="l", col="blue", xlim=c(-65,65),
+	lwd=3, xlab="Temperatur [°C]", ylab="Sättigungsdampfdruck [hPa]", 
+	main="Sättigungsdampfdruck Kurve")
 lines(Temp_Eis, es(Temp_Eis), col="lightblue", lwd=3, lty=2)
-legend("topleft", c("Wasser", "Eis"), title = "über", col = c("blue", "lightblue"), lty = 1:2, lwd=3)
+legend("topleft", c("Wasser", "Eis"), title = "über", 
+	col = c("blue", "lightblue"), lty = 1:2, lwd=3)
 }

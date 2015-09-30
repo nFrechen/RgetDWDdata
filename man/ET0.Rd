@@ -54,7 +54,8 @@ Sonnenscheindauer <- 10 # h
 Breitengrad <- 51 # °
 Datum <- as.Date("2014-06-01")
 
-calcET0(temp = Temp, date = Datum, sunshine = Sonnenscheindauer, U = U, v = v_2, latitude = Breitengrad) 
+calcET0(temp = Temp, date = Datum, sunshine = Sonnenscheindauer, 
+	U = U, v = v_2, latitude = Breitengrad) 
 # 6.184577
 
 #-----------------------------------

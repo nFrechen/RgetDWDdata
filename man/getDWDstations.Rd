@@ -27,13 +27,13 @@ Nanu Frechen
 \examples{
 # Stationsliste herunterladen:
 Stationen <- getDWDstations()
-View(Stationen)
+print(Stationen)
 
 
 # Stationen nach Länge der Messreihe sortieren:
 Stationen$"Länge Messreihe (Jahre)" <- 
 	year(Sys.time()) - as.numeric(Stationen$"Beginn Klimareihe")
-View(Stationen[order(Stationen$"Länge Messreihe (Jahre)"),])
+print(Stationen[order(Stationen$"Länge Messreihe (Jahre)"),])
 
 
 # aktuelle Daten aller Stationen herunterladen:

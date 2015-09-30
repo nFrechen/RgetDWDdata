@@ -23,7 +23,7 @@ getDWDdata(Messstelle, historisch=FALSE, Metadaten=FALSE)
 }
 }
 \details{
-Eine Beschreibung der Einheiten und Messprozeduren der Messwerte findet sich \href{http://www.dwd.de/bvbw/appmanager/bvbw/dwdwwwDesktop?_nfpb=true&_pageLabel=dwdwww_result_page&portletMasterPortlet_i1gsbDocumentPath=Navigation/Oeffentlichkeit/Klima__Umwelt/Klimadaten/kldaten__kostenfrei/elemente__tageswerte__node.html?__nnn=true}{hier}.
+Eine Beschreibung der Einheiten und Messprozeduren findet sich \href{http://www.dwd.de/bvbw/appmanager/bvbw/dwdwwwDesktop?_nfpb=true&_pageLabel=dwdwww_result_page&portletMasterPortlet_i1gsbDocumentPath=Navigation/Oeffentlichkeit/Klima__Umwelt/Klimadaten/kldaten__kostenfrei/elemente__tageswerte__node.html?__nnn=true}{hier}. Weitere Informationen finden sich in den Zusatzinfos, die mit den Datensätzen heruntergeladen werden können (\code{Metadaten=TRUE}).
 }
 %\value{
 %%  ~Describe the value returned
@@ -42,7 +42,7 @@ Diese Funktion wurde inspiriert von der Funktion \code{\link{get_usgs_gage}} des
 Nanu Frechen, Tobias Recke
 }
 \note{
-Bei einigen Messstationen kann die Datenstruktur inkonsistent sein und deshalb nicht von dieser Funktion eingelesen werden. Darüber hinaus ändert der DWD manchmal seine Datenstrukturen, was ein Anpassen dieser Funktion erfordert. Wenn Sie inkonsistenzen entdecken informieren sie den Maintainer dieses Pakets (\url{mailto: nanu.frechen@b-tu.de}).
+Bei einigen Messstationen kann die Datenstruktur inkonsistent sein und deshalb nicht von dieser Funktion eingelesen werden. Darüber hinaus ändert der DWD manchmal seine Datenstrukturen, was ein Anpassen dieser Funktion erfordert. Wenn Sie etwas entdecken informieren sie den Maintainer dieses Pakets (\href{mailto: nanu.frechen@b-tu.de}{nanu.frechen@b-tu.de}).
 Die Stationen Aachen, Berlin-Dahlem (LFAG), Karlsruhe, Leuchtturm Alte Weser und Rostock-Warnemünde sind bekannt Fehler beim herunterladen zu erzeugen (siehe Beispiel in \code{\link{getDWDstations}}).
 }
 
