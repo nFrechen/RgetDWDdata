@@ -2,10 +2,10 @@
 #---------- Stationsnamen herunterladen ------------------
 getDWDpubStatHourly <- function(){
  
-  colnames_stationen <- as.vector(t(read.table(url("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/precipitation/recent/RS_Stundenwerte_Beschreibung_Stationen.txt",
+  colnames_stationen <- as.vector(t(read.table(url("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/precipitation/recent/RR_Stundenwerte_Beschreibung_Stationen.txt",
                         encoding="ISO-8859-1"), nrows = 1)))
   
-  stationen <- read.fwf(url("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/precipitation/recent/RS_Stundenwerte_Beschreibung_Stationen.txt", encoding="ISO-8859-1"),
+  stationen <- read.fwf(url("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/precipitation/recent/RR_Stundenwerte_Beschreibung_Stationen.txt", encoding="ISO-8859-1"),
                         widths = c(5,9,9,15,12,10,42,23), skip=2, col.names = colnames_stationen, strip.white=T)
   
   return(head(stationen, -1))
@@ -55,10 +55,10 @@ if(is.na(historisch)){
     # historisch und aktuell zusammenfügen
     
     # letztes Datum 1.Datensatz
-    letztesDatum <- historisch$Daten$Mess_Datum[ nrow(historisch$Daten) ]
+    letztesDatum <- historisch$Daten$MESS_DATUM[ nrow(historisch$Daten) ]
     
     # ergibt Zeilennummer von letztesDatum im aktuellen Datensatz
-    zl.nr <- which(letztesDatum==aktuell$Daten$Mess_Datum)
+    zl.nr <- which(letztesDatum==aktuell$Daten$MESS_DATUM)
     
     # verbindet 1. und 2. Datensatz
     if (length(names(aktuell$Daten))== length(names(historisch$Daten))){
@@ -74,6 +74,7 @@ if(is.na(historisch)){
   }
 }
 
+# comment: this does not work if you give the wrong Messstelle number!!!
 if(historisch==T){
   downloadlink <- paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/", Parameter, "/historical/",histoDat[which(histoDatStID==Messstelle)])
 }else{
@@ -101,10 +102,10 @@ returnData$Daten <- read.csv(datafileCon, sep=";", strip.white=T, na.strings=-99
 returnData$Daten <- returnData$Daten[-nrow(returnData$Daten),-ncol(returnData$Daten)]
 
 # Datumsspalte von character zu Datum umwandeln
-returnData$Daten$Mess_Datum <-as.POSIXct(as.character(returnData$Daten$Mess_Datum), format="%Y%m%d%H", tz="GMT") 
+returnData$Daten$MESS_DATUM <- as.POSIXct(as.character(returnData$Daten$MESS_DATUM), format="%Y%m%d%H", tz="GMT") 
                                  
 # Sich wiederholende character Strings in Faktoren umwandeln:
-returnData$Daten$Stations_ID <- as.factor(returnData$Daten$Stations_ID)
+returnData$Daten$STATIONS_ID <- as.factor(returnData$Daten$STATIONS_ID)
 
 #---- Temp-Datei löschen: ----
 unlink(c(zipfile,files))
