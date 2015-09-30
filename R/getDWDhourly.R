@@ -1,22 +1,11 @@
-
-#---------- Stationsnamen herunterladen ------------------
-getDWDpubStatHourly <- function(){
- 
-  colnames_stationen <- as.vector(t(read.table(url("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/precipitation/recent/RR_Stundenwerte_Beschreibung_Stationen.txt",
-                        encoding="ISO-8859-1"), nrows = 1)))
-  
-  stationen <- read.fwf(url("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/precipitation/recent/RR_Stundenwerte_Beschreibung_Stationen.txt", encoding="ISO-8859-1"),
-                        widths = c(5,9,9,15,12,10,42,23), skip=2, col.names = colnames_stationen, strip.white=T)
-  
-  return(head(stationen, -1))
-}
-
 #------------------ Dateien listen -------------
 getDWDhourly <- function(Messstelle, historisch=F, Parameter){
   
- # Parameter-c("wind", "precipitation", "sun", "air_temperature", "solar", "soil_temperature", "cloudiness")  
+ possibleParameters <- c("wind", "precipitation", "sun", "air_temperature", "solar", "soil_temperature", "cloudiness")  
   
-require("RCurl")
+	if(!Parameter%in%possibleParameters) stop('Parameter must be one of "', paste(possibleParameters, collapse = '", "'), '"')
+ 
+ require("RCurl")
 aktuDat <-strsplit(getURL(paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/", Parameter, "/recent/"), dirlistonly = TRUE), "\n")[[1]]
 histoDat<-sort(strsplit(getURL(paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/",Parameter,"/historical/"), dirlistonly = TRUE), "\n")[[1]])
 
@@ -37,7 +26,7 @@ swaDat<-cDat[which(swa==T)]
 #------------------- Dateien runterladen ---------
 if(is.na(suppressWarnings(as.numeric(Messstelle)))) {
 
-  stationen<-getDWDpubStatHourly()
+  stationen<-getDWDstationsHourly()
     
   Messstelle_nr<- stationen$Stations_id[which(stationen$Stationsname==Messstelle | stationen$Stations_id==Messstelle)]
   if(length(Messstelle_nr)==0) stop(paste0('Messstelle "', Messstelle, '" kann nicht gefunden werden'))
