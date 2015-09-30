@@ -26,7 +26,7 @@ swaDat<-cDat[which(swa==T)]
 #------------------- Dateien runterladen ---------
 if(is.na(suppressWarnings(as.numeric(Messstelle)))) {
 
-  stationen<-getDWDstationsHourly()
+  stationen<-getDWDstations(type="hourly")
     
   Messstelle_nr<- stationen$Stations_id[which(stationen$Stationsname==Messstelle | stationen$Stations_id==Messstelle)]
   if(length(Messstelle_nr)==0) stop(paste0('Messstelle "', Messstelle, '" kann nicht gefunden werden'))
