@@ -1,8 +1,8 @@
 # Berechnung der Grasreferenzverdunstung
-Rn <- function(R_G=NA, sunshine=NA, doy=NA, date=NA, temp, U, latitude, albedo=0.23){
+evap.net.radiation <- function(R_G=NA, sunshine=NA, doy=NA, date=NA, temp, U, latitude, albedo=0.23){
 	if(is.na(doy) & is.na(date)) stop("Either doy or date have to be given")
 	if(is.na(doy)) doy = yday(date)
-	Rn_K(R_G, temp, sunshine, doy, latitude, albedo) - Rn_L(R_G, latitude, doy, temp, U, sunshine)
+	Rn_K(R_G, temp, sunshine, doy, latitude, albedo) - Rn_L(R_G, latitude, doy, temp, U, sunshine) # [mm/d]
 }
 
 Rn_K <- function(R_G=NA, temp, sunshine=NA, doy, latitude, albedo=0.23){
@@ -74,7 +74,7 @@ calcET0 <- function(temp, date=NA, doy=NA, R_G=NA, sunshine=NA, U, v, v_height=2
 	v_2 <- v * 4.2 /(log(v_height) + 3.5)
 	
 	s(temp)/(s(temp) + gammastar(v_2, gamma)) * 
-		Rn(R_G, sunshine, doy, date, temp, U, latitude, albedo) +
+		evap.net.radiation(R_G, sunshine, doy, date, temp, U, latitude, albedo) +
 		90*gamma / (s(temp) + gammastar(v_2, gamma)) * 
 		es(temp) / (temp + 273) *
 		(1-U/100) * v_2

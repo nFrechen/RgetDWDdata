@@ -5,7 +5,7 @@
 Sättigungsdampfdruck
 }
 \description{
-Berechnet den Sättigungsdampfdruck in hPa über Wasser oder Eis und die Steigung der Sättigungsdampdruckkurve in hPa/K nach ATV-DVWK-Merkblatt 504. Wird für die Berechnung der Grasreferenzverdunstung (siehe \code{\link{calcET0}}) verwendet.
+Berechnet den Sättigungsdampfdruck in hPa über Wasser oder Eis und die Steigung der Sättigungsdampdruckkurve in hPa/K nach \href{http://www.dwa.de/dwa/shop/shop.nsf/Produktanzeige?openform&produktid=P-DWAA-785JW8}{ATV-DVWK-Merkblatt 504}. Wird für die Berechnung der Grasreferenzverdunstung (siehe \code{\link{calcET0}}) verwendet.
 }
 \usage{
 es(temp, ice=FALSE)
@@ -25,7 +25,9 @@ Für Wasser muss die Lufttemperatur zwischen -45°C und +65°C liegen. Für Eis 
 \code{s()} gibt die Steigung der Sättigungsdampfdruckkurve in hPa/K zurück.
 }
 
-\references{ATV-DVWK-Merkblatt 504: Verdunstung in Bezug zu Landnutzung, Bewuchs und Boden, Hennef 2002}
+\references{
+\href{http://www.dwa.de/dwa/shop/shop.nsf/Produktanzeige?openform&produktid=P-DWAA-785JW8}{ATV-DVWK-Merkblatt 504: Verdunstung in Bezug zu Landnutzung, Bewuchs und Boden, Hennef 2002}
+}
 
 \seealso{\code{\link{calcET0}}}
 
