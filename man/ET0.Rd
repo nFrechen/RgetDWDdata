@@ -4,12 +4,14 @@
 \description{
 Berechnet die Grasreferenzverdunstung (ET0) nach ATV-DVWK-Merblatt 504}
 \usage{
-calcET0(temp, date, sunshine, U, v, v_height=2, latitude, albedo = 0.23, gamma=0.65)
+calcET0(temp, date=NA, doy=NA, R_G=NA, sunshine=NA, U, v, v_height=2, latitude, albedo=0.23, gamma=0.65)
 }
 \arguments{
   \item{temp}{Lufttemperatur als Tagesmittel in °C}
-  \item{date}{Datum der Messung}
-  \item{sunshine}{Sonnenscheindauer in Stunden}
+  \item{date}{Datum der Messung. Muss gegeben sein wenn \code{doy} nicht gegeben ist.}
+  \item{date}{Tag des Jahres (day of year). Muss gegeben sein wenn \code{date} nicht gegeben ist.}
+  \item{R_G}{Globalstrahlung in J/(cm^2*d). Muss gegeben sein wenn \code{sunshine} nicht gegeben ist. Wird benutzt wenn sowohl \code{R_G} als auch \code{sunshine} gegeben sind.}
+  \item{sunshine}{Sonnenscheindauer in Stunden. Muss gegeben sein wenn \code{R_G} nicht gegeben ist (Globalstrahlung wird aus Sonnenscheindauer berechnet). Wird nicht benutzt wenn \code{R_G} gegeben ist.}
   \item{U}{Relative Luftfeuchte in Prozent}
   \item{v}{Windgeschwindigkeit als Tagesmittel in m/s}
   \item{v_height}{Höhe der Windgeschwindigkeitsmessung in m (wird in die Wingeschwindigkeit in 2m Höhe umgerechnet)}
