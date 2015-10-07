@@ -70,12 +70,13 @@ s <- function(temp, ice=FALSE){
 
 
 
-calcET0 <- function(temp, date=NA, doy=NA, R_G=NA, sunshine=NA, U, v, v_height=2, latitude, albedo=0.23, gamma=0.65){
+calcET0 <- function(temp, date=NA, doy=NA, R_G=NA, sunshine=NA, U, v, v_height=2, latitude, albedo=0.23, gamma=0.65, ice=FALSE){
 	v_2 <- v * 4.2 /(log(v_height) + 3.5)
 	
-	s(temp)/(s(temp) + gammastar(v_2, gamma)) * 
+	ET0 = s(temp)/(s(temp) + gammastar(v_2, gamma)) * 
 		evap.net.radiation(R_G, sunshine, doy, date, temp, U, latitude, albedo) +
 		90*gamma / (s(temp) + gammastar(v_2, gamma)) * 
-		es(temp) / (temp + 273) *
+		es(temp, ice) / (temp + 273) *
 		(1-U/100) * v_2
+	return(ET0)
 }
