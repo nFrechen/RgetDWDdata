@@ -1,14 +1,14 @@
 # Berechnung der Grasreferenzverdunstung
 evap.net.radiation <- function(R_G=NA, sunshine=NA, doy=NA, date=NA, temp, U, latitude, albedo=0.23){
-	if(is.na(doy) & is.na(date)) stop("Either doy or date have to be given")
-	if(is.na(doy)) doy = yday(date)
+	if(all(is.na(doy)) & all(is.na(date))) stop("Either doy or date have to be given")
+	if(all(is.na(doy))) doy = yday(date)
 	Rn_K(R_G, temp, sunshine, doy, latitude, albedo) - Rn_L(R_G, latitude, doy, temp, U, sunshine) # [mm/d]
 }
 
 Rn_K <- function(R_G=NA, temp, sunshine=NA, doy, latitude, albedo=0.23){
-	if(is.na(R_G) & is.na(sunshine)) stop("Either global radiation (R_G) or sunshine duration (sunshine) have to be given")
-	if(!is.na(R_G) & !is.na(sunshine)) warning("sunshine duration (sunshine) is neglected since global radiation (R_G) is given")
-	if(!is.na(R_G)) {
+	if(all(is.na(R_G)) & all(is.na(sunshine))) stop("Either global radiation (R_G) or sunshine duration (sunshine) have to be given")
+	if(!all(is.na(R_G)) & !all(is.na(sunshine))) warning("sunshine duration (sunshine) is neglected since global radiation (R_G) is given")
+	if(!all(is.na(R_G))) {
 	}else{
 		warning("Calculating global radiation (R_G) from sunshine duration")
 		R_G = R_G(sunshine, doy, latitude)
@@ -27,7 +27,7 @@ R_0 <- function(doy, latitude){
 }
 
 Rn_L <- function(R_G=NA, latitude, doy, temp, U, sunshine){
-	if(is.na(R_G)) R_G = R_G(sunshine, doy, latitude)
+	if(all(is.na(R_G))) R_G = R_G(sunshine, doy, latitude)
 	# phi = geographic latitude [°]
 	R_L = 10.8 + 0.205 * temp # approximation
 	Rn_L = R_L * (1.64*R_G/R_0(doy, latitude) - 0.22) * (0.34 - 0.0044 * sqrt(U*es(temp))) # [mm/d]
