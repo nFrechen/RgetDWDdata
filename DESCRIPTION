@@ -8,6 +8,6 @@ Maintainer: Nanu Frechen <nanu.frechen@b-tu.de>
 Description: R functions to download data from the DWD (German Weather Service)
 License: GPL-2
 NeedsCompilation: no
-Depends: lubridate, XML, EcoHydRology
+Depends: lubridate, XML, EcoHydRology, RCurl
 Encoding: UTF-8
 Language: DE

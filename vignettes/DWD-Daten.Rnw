@@ -8,7 +8,7 @@
 \begin{document}
 
 <<settings, include=FALSE, message=FALSE>>=
-library("HydroToolbox")
+library("RgetDWDdata")
 library("knitr")
 opts_chunk$set(dpi=300, tidy=TRUE, cache=TRUE, dev="png", fig.pos="h", error=FALSE, warning=FALSE)
 @
