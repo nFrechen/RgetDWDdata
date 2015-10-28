@@ -12,9 +12,7 @@ Braucht keine Argumente
 }
 
 \references{
-Quelle der Daten: \url{http://www.dwd.de}
-
-Die Stationsliste wird von \href{http://www.dwd.de/sid_gCpjSTGJDhT7rZvV38t3vSJWnnQc1HLyFcD46pL789crw0MpqGrg!295356740!-364271037!1385038953230/bvbw/appmanager/bvbw/dwdwwwDesktop?_nfpb=true&_pageLabel=dwdwww_result_page&portletMasterPortlet_i1gsbDocumentPath=Navigation/Oeffentlichkeit/Klima__Umwelt/Klimadaten/kldaten__kostenfrei/stations_C3_BCbersicht__tabelle__node.html?F__nnn=true}{dieser url} heruntergeladen.
+Die Stationsliste der täglichen Daten wird von \href{ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl/recent/KL_Tageswerte_Beschreibung_Stationen.txt}{dieser url} heruntergeladen.
 }
 \author{
 Nanu Frechen
@@ -57,7 +55,6 @@ if(interactive()){
 	Stationen <- Stationen[-Fehlerhaft,]
 	}
 
-}
 
 # Karte mit allen Stationen anzeigen:
 if(require("maps")){

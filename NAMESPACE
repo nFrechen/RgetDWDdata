@@ -1,2 +1,2 @@
 exportPattern("^[[:alpha:]]+")
-import(lubridate, XML, EcoHydRology)
+import(lubridate, XML, EcoHydRology, RCurl)

@@ -5,7 +5,7 @@
 Lädt Klimadaten von den Servern des DWD herunter
 }
 \description{
-Der Deutsche Wetterdienst (DWD) stellt unter \href{http://www.dwd.de/sid_gCpjSTGJDhT7rZvV38t3vSJWnnQc1HLyFcD46pL789crw0MpqGrg!295356740!-364271037!1385038953230/bvbw/appmanager/bvbw/dwdwwwDesktop?_nfpb=true&_pageLabel=dwdwww_result_page&portletMasterPortlet_i1gsbDocumentPath=Navigation/Oeffentlichkeit/Klima__Umwelt/Klimadaten/kldaten__kostenfrei/stations_C3_BCbersicht__tabelle__node.html?F__nnn=true}{www.dwd.de} eine Reihe von Klimadaten (Tagesdaten) zur Verfügung. Diese können mit dieser Funktion heruntergeladen und in R importiert werden.
+Der Deutsche Wetterdienst (DWD) stellt unter \href{ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl}{www.dwd.de} eine Reihe von Klimadaten (Tagesdaten) zur Verfügung. Diese können mit dieser Funktion heruntergeladen und in R importiert werden.
 }
 \usage{
 getDWDdata(Messstelle, historisch=FALSE, Metadaten=FALSE)
@@ -23,7 +23,7 @@ getDWDdata(Messstelle, historisch=FALSE, Metadaten=FALSE)
 }
 }
 \details{
-Eine Beschreibung der Einheiten und Messprozeduren findet sich \href{http://www.dwd.de/bvbw/appmanager/bvbw/dwdwwwDesktop?_nfpb=true&_pageLabel=dwdwww_result_page&portletMasterPortlet_i1gsbDocumentPath=Navigation/Oeffentlichkeit/Klima__Umwelt/Klimadaten/kldaten__kostenfrei/elemente__tageswerte__node.html?__nnn=true}{hier}. Weitere Informationen finden sich in den Zusatzinfos, die mit den Datensätzen heruntergeladen werden können (\code{Metadaten=TRUE}).
+Eine Beschreibung der Einheiten und Messprozeduren findet sich \href{ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl/recent/BESCHREIBUNG_obsgermany_climate_daily_kl_recent_de.pdf}{hier (Deutsch)} oder \href{ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl/recent/DESCRIPTION_obsgermany_climate_daily_kl_recent_en.pdf}{hier (Englisch)}. Weitere Informationen finden sich in den Zusatzinfos, die mit den Datensätzen heruntergeladen werden können (\code{Metadaten=TRUE}).
 }
 %\value{
 %%  ~Describe the value returned
@@ -33,7 +33,7 @@ Eine Beschreibung der Einheiten und Messprozeduren findet sich \href{http://www.
 %% ...
 %}
 \references{
-Quelle der Daten: \href{http://www.dwd.de/sid_gCpjSTGJDhT7rZvV38t3vSJWnnQc1HLyFcD46pL789crw0MpqGrg!295356740!-364271037!1385038953230/bvbw/appmanager/bvbw/dwdwwwDesktop?_nfpb=true&_pageLabel=dwdwww_result_page&portletMasterPortlet_i1gsbDocumentPath=Navigation/Oeffentlichkeit/Klima__Umwelt/Klimadaten/kldaten__kostenfrei/stations_C3_BCbersicht__tabelle__node.html?F__nnn=true}{www.dwd.de}
+Quelle der Daten: \href{ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl}{www.dwd.de}
 
 
 Diese Funktion wurde inspiriert von der Funktion \code{\link{get_usgs_gage}} des \code{\link{EcoHydRology}} Pakets.
@@ -56,7 +56,7 @@ KlimadatenCottbus <- getDWDdata("Cottbus")
 head(KlimadatenCottbus)
 tail(KlimadatenCottbus)
 
-KlimadatenHannover <- getDWDdata("Hannover", historisch=TRUE) 
+KlimadatenHannover <- getDWDdata("Hannover", historisch=TRUE, Metadaten=TRUE) 
 # lädt den historischen Datensatz der Station Hamburg herunter
 head(KlimadatenHannover)
 tail(KlimadatenHannover)

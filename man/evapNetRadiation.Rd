@@ -28,7 +28,8 @@ Nanu Frechen
 }
 
 \seealso{
-Berechnung der Grasreferenzverdunstung \code{\link{calcET0}}} und des Sättigungsdampfdrucks \code{\link{es}}
+Berechnung der Grasreferenzverdunstung \code{\link{calcET0}} und des Sättigungsdampfdrucks \code{\link{es}}
+}
 \examples{
 
 }

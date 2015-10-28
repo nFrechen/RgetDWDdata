@@ -43,7 +43,7 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE){
 	
 	# kombiniert die beiden Datensaetze, wenn historisch=NA:
 	if(is.na(historisch)){
-		aktuell <- getDWDdata(Messstelle, historisch=FALSE, Metadaten = TRUE)
+		aktuell <- getDWDdata(Messstelle, historisch=FALSE, Metadaten = Metadaten)
 		historisch <- getDWDdata(Messstelle, historisch=TRUE, Metadaten = FALSE)
 		
 		# historisch und aktuell zusammenfuegen
