@@ -5,7 +5,7 @@ Version: 0.1
 Date: 2015-01-09
 Author: Nanu Frechen, Egbert Gassert, Sabine Schümberg, Ina Pohle, Tobias Recke
 Maintainer: Nanu Frechen <nanu.frechen@b-tu.de>
-Description: R functions to download data from the DWD (German Weather Service)
+Description: R functions to download data from the DWD (German Weather Service).
 License: GPL-2
 NeedsCompilation: no
 Depends: lubridate, XML, EcoHydRology, RCurl
