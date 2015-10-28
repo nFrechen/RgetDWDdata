@@ -1,17 +1,14 @@
 getDWDstations <- function(type="daily"){
 	switch(type,
 				 daily = {
-						#library("XML") # not needed in package
-						DWDstationenURL <- "http://www.dwd.de/sid_gCpjSTGJDhT7rZvV38t3vSJWnnQc1HLyFcD46pL789crw0MpqGrg!295356740!-364271037!1385038953230/bvbw/appmanager/bvbw/dwdwwwDesktop?_nfpb=true&_pageLabel=dwdwww_result_page&portletMasterPortlet_i1gsbDocumentPath=Navigation%2FOeffentlichkeit%2FKlima__Umwelt%2FKlimadaten%2Fkldaten__kostenfrei%2Fstations_C3_BCbersicht__tabelle__node.html%3F__nnn%3Dtrue"
-						Stationen <- readHTMLTable(DWDstationenURL, stringsAsFactors = FALSE, which=7, skip.rows=1, header=TRUE, colClasses = c("character", "character", "character", "character", "numeric", "character", "character", "character", "numeric"))
-						colnames(Stationen) <- sub("\n\n", " ", colnames(Stationen))
-						colnames(Stationen)[6:7] <- c("geoBreite", "geoLaenge")
-						Stationen$"geoBreite" <- sub("°.", ".", Stationen$"geoBreite")
-						Stationen$"geoBreite" <- as.numeric(sub("'", "", Stationen$"geoBreite"))
-						Stationen$"geoLaenge" <- sub("°.", ".", Stationen$"geoLaenge")
-						Stationen$"geoLaenge" <- as.numeric(sub("'", "", Stationen$"geoLaenge"))
-						
-						return(Stationen)
+					#library("XML") # not needed in package
+					DWDstationenURL <- "ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl/recent/KL_Tageswerte_Beschreibung_Stationen.txt"
+					stationFile <- tempfile()
+					download.file(DWDstationenURL, stationFile)
+					header <- read.table(stationFile, header = FALSE, sep = " ", stringsAsFactors = FALSE, nrows = 1)
+					Stationen <- head(suppressWarnings(read.fwf(stationFile, widths = diff(c(0,12,21,30,45,57,67,108,201)), strip.white=TRUE, stringsAsFactors = FALSE, header=FALSE, skip=2, fileEncoding = "ISO-8859-1", encoding= "ISO-8859-1", col.names = header)), -1) # use head(, -1) to cut away the last row which is incomplete
+					Stationen$Stations_id <- formatC(as.numeric(Stationen$Stations_id), width = 5, format = "d", flag = "0")
+					return(Stationen)
 				 }, 
 			   hourly={
 						colnames_stationen <- as.vector(t(read.table(url("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/precipitation/recent/RR_Stundenwerte_Beschreibung_Stationen.txt", encoding="ISO-8859-1"), nrows = 1)))
@@ -46,10 +43,12 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE){
 	
 	
 	if(is.na(suppressWarnings(as.numeric(Messstelle)))) {
+		message("Get station ID by station name (to skip this part provide station ID directly)\n")
 		# downloade Stationsliste wenn "Messstelle" ein character ist (Stationsname)
 		stationen <- getDWDstations()
-		Messstelle_nr <- stationen$`Stations-Kennziffer`[which(stationen$Stationsname==Messstelle | stationen$`Stations-Kennziffer`==Messstelle)]
+		Messstelle_nr <- stationen$Stations_id[which(stationen$Stationsname==Messstelle)]
 		if(length(Messstelle_nr)==0) stop(paste0('Messstelle "', Messstelle, '" kann nicht gefunden werden'))
+		message("\nStation ID is ", Messstelle_nr, "\n")
 		Messstelle <- Messstelle_nr
 	}
 	# Ansonsten einfach die Nummer verwenden
@@ -81,6 +80,7 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE){
 		} 
 		
 		# verbindet 1. und 2. Datensatz
+		message("\nmerge datasets\n")
 		aktuell$Daten <- 
 			test <- rbind(historisch,aktuell$Daten[(zl.nr+1):nrow(aktuell$Daten) , ])
 		if(Metadaten){
@@ -91,9 +91,13 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE){
 	}
 	
 	if(historisch){
-		downloadlink <- paste0("http://www.dwd.de/bvbw/generator/DWDWWW/Content/Oeffentlichkeit/KU/KU2/KU21/klimadaten/german/download/tageswerte/kl__", Messstelle, "__hist__txt,templateId=raw,property=publicationFile.zip/kl_", Messstelle, "_hist_txt.zip")
+		message("\ndownload historical dataset\n")
+		filenames <- strsplit(getURL("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl/historical/", ftp.use.epsv=FALSE, dirlistonly=TRUE), "\n")[[1]]
+		ids <- substr(filenames, 12, 16)
+		downloadlink <- paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl/historical/", filenames[which(ids==Messstelle)])
 	}else{
-		downloadlink <- paste0("http://www.dwd.de/bvbw/generator/DWDWWW/Content/Oeffentlichkeit/KU/KU2/KU21/klimadaten/german/download/tageswerte/kl__", Messstelle, "__akt__txt,templateId=raw,property=publicationFile.zip/kl_", Messstelle, "_akt_txt.zip")
+		message("\ndownload recent dataset\n")
+		downloadlink <- paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl/recent/tageswerte_KL_", Messstelle, "_akt.zip")
 	}
 	
 	# Tempfile erzeugen
