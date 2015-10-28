@@ -58,7 +58,7 @@ Datum <- as.Date("2014-06-01")
 
 calcET0(temp = Temp, date = Datum, sunshine = Sonnenscheindauer, 
 	U = U, v = v_2, latitude = Breitengrad) 
-# 6.184577
+# 6.187067
 
 #-----------------------------------
 
@@ -66,7 +66,7 @@ calcET0(temp = Temp, date = Datum, sunshine = Sonnenscheindauer,
 Cottbus <- getDWDdata("Cottbus", historisch = NA, Metadaten = TRUE)
 
 Temp <- Cottbus$Daten$LUFTTEMPERATUR
-Datum <- Cottbus$Daten$Mess_Datum
+Datum <- Cottbus$Daten$MESS_DATUM
 Sonnenschein <- Cottbus$Daten$SONNENSCHEINDAUER
 U <- Cottbus$Daten$REL_FEUCHTE       
 Wind <- Cottbus$Daten$WINDGESCHWINDIGKEIT
@@ -75,8 +75,7 @@ Breitengrad <- tail(Cottbus$Metadaten$Geogr.Breite, 1)
 Niederschlag <- Cottbus$Daten$NIEDERSCHLAGSHOEHE
 
 # Grasreferenzverdunstung berechnen:
-ET0 <- calcET0(Temp, Datum, Sonnenschein, U, Wind, Wind_h, Breitengrad)
-
+ET0 <- calcET0(temp = Temp, date = Datum, sunshine = Sonnenschein, U = U, v = Wind, v_height = Wind_h, latitude = Breitengrad)
 # Zeitreihe für das letze Jahr
 index <- (length(Datum)-365):length(Datum)
 plot(Datum[index], ET0[index], type="l", main="Grasreferenzverdunstung im Jahresverlauf")
