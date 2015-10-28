@@ -9,5 +9,6 @@ Description: R functions to download data from the DWD (German Weather Service)
 License: GPL-2
 NeedsCompilation: no
 Depends: lubridate, XML, EcoHydRology, RCurl
+Suggests: maps
 Encoding: UTF-8
 Language: DE
