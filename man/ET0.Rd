@@ -4,7 +4,7 @@
 \description{
 Berechnet die Grasreferenzverdunstung (ET0) nach \href{http://www.dwa.de/dwa/shop/shop.nsf/Produktanzeige?openform&produktid=P-DWAA-785JW8}{ATV-DVWK-Merblatt 504}}
 \usage{
-calcET0(temp, date=NA, doy=NA, R_G=NA, sunshine=NA, U, v, v_height=2, latitude, albedo=0.23, gamma=0.65)
+calcET0(temp, date=NA, doy=NA, R_G=NA, sunshine=NA, U, v, v_height=2, latitude, albedo=0.23, gamma=0.65, ice = FALSE)
 }
 \arguments{
   \item{temp}{Lufttemperatur als Tagesmittel in °C}
@@ -18,6 +18,7 @@ calcET0(temp, date=NA, doy=NA, R_G=NA, sunshine=NA, U, v, v_height=2, latitude, 
 	\item{latitude}{Breitengrad der Messstation}
 	\item{albedo}{Albodo der Vegetation (Standard = 0.23 für Gras)}
   \item{gamma}{Psychrometerkonstante (Standard = 0.65 hPa/K)}
+  \item{ice}{Soll die Verdunstung über Eis oder flüssigem Wasser berechnet werden?}
 }
 \details{
 Die Gras-Referenzverdunstung basiert auf der Penman-Monteith-Beziehung. Sie ist der international einheitliche Standard zur Berechnung der potenziellen Verdunstung.

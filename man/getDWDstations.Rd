@@ -25,13 +25,16 @@ Nanu Frechen
 \examples{
 # Stationsliste herunterladen:
 Stationen <- getDWDstations()
-print(Stationen)
-
+\dontrun{
+	print(Stationen)
+}
 
 # Stationen nach Länge der Messreihe sortieren:
 Stationen$"Länge Messreihe (Jahre)" <- 
-	year(Sys.time()) - as.numeric(Stationen$"Beginn Klimareihe")
+	year(Sys.time()) - as.numeric(Stationen$von_datum)
+\dontrun{
 print(Stationen[order(Stationen$"Länge Messreihe (Jahre)"),])
+}
 
 
 if(interactive()){
@@ -41,7 +44,7 @@ if(interactive()){
 	for(i in (1:length(Stationen$Stationsname))){
 		DWDdata[[Stationen$Stationsname[i]]] <- 
 			try(getDWDdata(Stationen$"Stations-Kennziffer"[i],
-				Metadaten = T))
+										 Metadaten = T))
 	}
 	
 	
@@ -53,15 +56,15 @@ if(interactive()){
 	Fehlerhaft <- which(lapply(DWDdata, class)=="try-error")
 	print(Fehlerhaft)
 	Stationen <- Stationen[-Fehlerhaft,]
-	}
+}
 
 
 # Karte mit allen Stationen anzeigen:
 if(require("maps")){
 	map("world", regions = "Germany")
-	points(stations[,6:5], pch=20, cex=0.5)
+	points(Stationen[,6:5], pch=20, cex=0.5)
 	if(interactive())
-	stations[ identify(stations[,6:5], label=stations$Stationsname, n=1, col="red"), ]
+		Stationen[ identify(Stationen[,6:5], label=Stationen$Stationsname, n=1, col="red"), ]
 }
 
 }

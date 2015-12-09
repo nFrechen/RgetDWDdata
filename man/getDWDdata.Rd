@@ -56,13 +56,13 @@ KlimadatenCottbus <- getDWDdata("Cottbus")
 head(KlimadatenCottbus)
 tail(KlimadatenCottbus)
 
-KlimadatenHannover <- getDWDdata("Hannover", historisch=TRUE, Metadaten=TRUE) 
+KlimadatenHannover <- getDWDdata("Hannover", historisch=TRUE) 
 # lädt den historischen Datensatz der Station Hamburg herunter
 head(KlimadatenHannover)
 tail(KlimadatenHannover)
 
 
-KlimadatenCottbus <- getDWDdata("10496", historisch=NA, Metadaten=TRUE) 
+KlimadatenCottbus <- getDWDdata("00880", historisch=NA, Metadaten=TRUE) 
 # lädt den historischen und aktuellen Datensatz der Station Cottbus herunter 
 # (über die Stations-Kennziffer) und gibt zusätzlich Metadaten zurück
 str(KlimadatenCottbus, 1)
