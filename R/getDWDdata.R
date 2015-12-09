@@ -43,7 +43,7 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE){
 	
 	# kombiniert die beiden Datensaetze, wenn historisch=NA:
 	if(is.na(historisch)){
-		aktuell <- getDWDdata(Messstelle, historisch=FALSE, Metadaten = Metadaten)
+		aktuell <- getDWDdata(Messstelle, historisch=FALSE, Metadaten = TRUE)
 		historisch <- getDWDdata(Messstelle, historisch=TRUE, Metadaten = FALSE)
 		
 		# historisch und aktuell zusammenfuegen
@@ -67,8 +67,7 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE){
 		
 		# verbindet 1. und 2. Datensatz
 		message("\nmerge datasets\n")
-		aktuell$Daten <- 
-			test <- rbind(historisch,aktuell$Daten[(zl.nr+1):nrow(aktuell$Daten) , ])
+		aktuell$Daten <- rbind(historisch,aktuell$Daten[(zl.nr+1):nrow(aktuell$Daten) , ])
 		if(Metadaten){
 			return(aktuell)
 		}else{
