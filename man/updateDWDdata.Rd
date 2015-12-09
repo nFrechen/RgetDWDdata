@@ -26,9 +26,6 @@ updateDWDdata(Datensatz)
 %%  \item{comp2 }{Description of 'comp2'}
 %% ...
 %}
-\references{
-Quelle der Daten: \url{http://www.dwd.de}
-}
 \author{
 Tobias Recke
 }

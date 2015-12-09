@@ -5,7 +5,7 @@
 Lädt Klimadaten von den Servern des DWD herunter
 }
 \description{
-Der Deutsche Wetterdienst (DWD) stellt unter \href{ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl}{www.dwd.de} eine Reihe von Klimadaten (Tagesdaten) zur Verfügung. Diese können mit dieser Funktion heruntergeladen und in R importiert werden.
+Der Deutsche Wetterdienst (DWD) stellt unter \href{ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl}{ftp://ftp-cdc.dwd.de} eine Reihe von Klimadaten (Tagesdaten) zur Verfügung. Diese können mit dieser Funktion heruntergeladen und in R importiert werden.
 }
 \usage{
 getDWDdata(Messstelle, historisch=FALSE, Metadaten=FALSE)
@@ -33,7 +33,7 @@ Eine Beschreibung der Einheiten und Messprozeduren findet sich \href{ftp://ftp-c
 %% ...
 %}
 \references{
-Quelle der Daten: \href{ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl}{www.dwd.de}
+Quelle der Daten: \href{ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl}{ftp://ftp-cdc.dwd.de}
 
 
 Diese Funktion wurde inspiriert von der Funktion \code{\link{get_usgs_gage}} des \code{\link{EcoHydRology}} Pakets.

@@ -12,7 +12,7 @@ Braucht keine Argumente
 }
 
 \references{
-Die Stationsliste der täglichen Daten wird von \href{ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl/recent/KL_Tageswerte_Beschreibung_Stationen.txt}{dieser url} heruntergeladen.
+Die Stationsliste der täglichen Daten wird von \href{ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl/recent/KL_Tageswerte_Beschreibung_Stationen.txt}{ftp://ftp-cdc.dwd.de} heruntergeladen.
 }
 \author{
 Nanu Frechen

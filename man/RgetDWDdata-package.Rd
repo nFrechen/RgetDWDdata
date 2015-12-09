@@ -23,7 +23,7 @@ Nanu Frechen, Egbert Gassert, Ina Pohle, Tobias Recke
 Maintainer: Nanu Frechen <nanu.frechen@b-tu.de>
 }
 \references{
-Quelle der DWD Daten: \url{http://www.dwd.de}
+Quelle der DWD Daten: \url{ftp://ftp-cdc.dwd.de}
 
 Die Funktion \code{\link{getDWDdata}} wurde inspiriert von der Funktion \code{\link[EcoHydRology]{get_usgs_gage}} des \code{\link[EcoHydRology]{EcoHydRology}} Pakets.
 }
