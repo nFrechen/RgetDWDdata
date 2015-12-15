@@ -77,7 +77,7 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE){
 	
 	if(historisch){
 		message("\ndownload historical dataset\n")
-		filenames <- strsplit(getURL("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl/historical/", ftp.use.epsv=FALSE, dirlistonly=TRUE), "\n")[[1]]
+		filenames <- strsplit(getURL("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl/historical/", ftp.use.epsv=FALSE, dirlistonly=TRUE), c("\r\n", "\n", "\r"))[[1]]
 		ids <- substr(filenames, 12, 16)
 		downloadlink <- paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl/historical/", filenames[which(ids==Messstelle)])
 	}else{
