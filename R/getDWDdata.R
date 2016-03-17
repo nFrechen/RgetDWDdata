@@ -93,7 +93,13 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE){
 	zipfile <- tempfile("DWD_download_", fileext=".zip")
 	
 	# Zip-Datei runterladen
-	download.file(downloadlink,zipfile)
+	dexit <- download.file(downloadlink,zipfile)
+	
+	# Exit-Status des downloads überprüfen
+	if(dexit!=0){
+		message("The file at ", downloadlink, " could not be downloaded.")
+		return()
+	} 
 	
 	# Dateinamen aus der Zip-Datei auslesen
 	files <- unzip(zipfile, exdir=tempdir())
