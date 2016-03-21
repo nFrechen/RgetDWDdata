@@ -36,7 +36,7 @@ Eine Beschreibung der Einheiten und Messprozeduren findet sich \href{ftp://ftp-c
 Quelle der Daten: \href{ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl}{ftp://ftp-cdc.dwd.de}
 
 
-Diese Funktion wurde inspiriert von der Funktion \code{\link{get_usgs_gage}} des \code{\link{EcoHydRology}} Pakets.
+Diese Funktion wurde inspiriert von der Funktion \code{get_usgs_gage} des \code{EcoHydRology} Pakets.
 }
 \author{
 Nanu Frechen, Tobias Recke
@@ -51,19 +51,19 @@ Die Stationen Aachen, Berlin-Dahlem (LFAG), Karlsruhe, Leuchtturm Alte Weser und
 \code{\link{getDWDstations}}, \code{\link{updateDWDdata}}
 }
 \examples{
-KlimadatenCottbus <- getDWDdata("Cottbus") 
+KlimadatenCottbus <- getDWDdata("Cottbus")
 # lädt den aktuellen Datensatz der Station Cottbus herunter
 head(KlimadatenCottbus)
 tail(KlimadatenCottbus)
 
-KlimadatenHannover <- getDWDdata("Hannover", historisch=TRUE) 
+KlimadatenHannover <- getDWDdata("Hannover", historisch=TRUE)
 # lädt den historischen Datensatz der Station Hamburg herunter
 head(KlimadatenHannover)
 tail(KlimadatenHannover)
 
 
-KlimadatenCottbus <- getDWDdata("00880", historisch=NA, Metadaten=TRUE) 
-# lädt den historischen und aktuellen Datensatz der Station Cottbus herunter 
+KlimadatenCottbus <- getDWDdata("00880", historisch=NA, Metadaten=TRUE)
+# lädt den historischen und aktuellen Datensatz der Station Cottbus herunter
 # (über die Stations-Kennziffer) und gibt zusätzlich Metadaten zurück
 str(KlimadatenCottbus, 1)
 head(KlimadatenCottbus$Daten)
