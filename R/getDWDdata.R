@@ -2,7 +2,7 @@ getDWDstations <- function(){
 	#library("XML") # not needed in package
 	DWDstationenURL <- "ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl/recent/KL_Tageswerte_Beschreibung_Stationen.txt"
 	stationFile <- tempfile()
-	
+	dexit = 1
 	try(dexit <- download.file(DWDstationenURL, stationFile))
 	# Exit-Status des downloads überprüfen
 	if(dexit!=0){
@@ -100,6 +100,7 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE){
 	zipfile <- tempfile("DWD_download_", fileext=".zip")
 	
 	# Zip-Datei runterladen
+	dexit = 1
 	try(dexit <- download.file(downloadlink,zipfile))
 	
 	# Exit-Status des downloads überprüfen
