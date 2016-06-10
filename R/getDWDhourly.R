@@ -1,11 +1,11 @@
 #---------- Stationsnamen herunterladen ------------------
-getDWDpubStatHourly <- function(Parameter, historisch) {
+getDWDhourlyStations <- function(Parameter, historisch) {
 	
-	Obs<-data.frame(Parameter =c("sun","air_temperature","cloudiness","precipitation","pressure", "soil_temperature", "wind", "solar"),
-									Dateiname=c("SD_Stundenwerte_Beschreibung_Stationen.txt","TU_Stundenwerte_Beschreibung_Stationen.txt",
-															"N_Stundenwerte_Beschreibung_Stationen.txt","RR_Stundenwerte_Beschreibung_Stationen.txt",
+	Obs<-data.frame(Parameter =c("sun", "air_temperature", "cloudiness", "precipitation", "pressure", "soil_temperature", "wind", "solar"),
+									Dateiname=c("SD_Stundenwerte_Beschreibung_Stationen.txt", "TU_Stundenwerte_Beschreibung_Stationen.txt",
+															"N_Stundenwerte_Beschreibung_Stationen.txt", "RR_Stundenwerte_Beschreibung_Stationen.txt",
 															"P0_Stundenwerte_Beschreibung_Stationen.txt", "EB_Stundenwerte_Beschreibung_Stationen.txt",
-															"FF_Stundenwerte_Beschreibung_Stationen.txt","ST_Stundenwerte_Beschreibung_Stationen.txt"))
+															"FF_Stundenwerte_Beschreibung_Stationen.txt", "ST_Stundenwerte_Beschreibung_Stationen.txt"))
 	
 	txt<-as.vector(Obs[Obs$Parameter==paste(Parameter),2]) 
 	
@@ -27,7 +27,7 @@ getDWDpubStatHourly <- function(Parameter, historisch) {
 }
 
 #------------------ Dateien listen -------------
-getDWDhVar <- function(Messstelle, historisch, Parameter, Metadaten=F){
+getDWDhourly <- function(Messstelle, historisch, Parameter, Metadaten=F){
 	
 	# Parameter-c("wind", "precipitation", "sun", "air_temperature", "pressure", "soil_temperature", "cloudiness")  
 	require("RCurl")
@@ -38,12 +38,12 @@ getDWDhVar <- function(Messstelle, historisch, Parameter, Metadaten=F){
 	if(is.na(suppressWarnings(as.numeric(Messstelle)))) {
 		if(!is.na(historisch)){
 			if(historisch){
-				stationen<-getDWDpubStatHourly(Parameter, historisch=F)
+				stationen<-getDWDhourlyStations(Parameter, historisch=F)
 				Messstelle_nr<- stationen$Stations_id[which(stationen$Stationsname==Messstelle | stationen$Stations_id==Messstelle)]
 				if(length(Messstelle_nr)==0) stop(paste0('Messstelle "', Messstelle, '" kann nicht im aktuellen Ordner ', Parameter , ' gefunden werden'))
 				Messstelle <- formatC(as.integer(as.character(Messstelle_nr)), width = 5, flag = "0",  format = "d")
 			}else{
-				stationen<-getDWDpubStatHourly(Parameter, historisch=T)
+				stationen<-getDWDhourlyStations(Parameter, historisch=T)
 				Messstelle_nr<- stationen$Stations_id[which(stationen$Stationsname==Messstelle | stationen$Stations_id==Messstelle)]
 				if(length(Messstelle_nr)==0) stop(paste0('Messstelle "', Messstelle, '" kann nicht im historischen Ordner ', Parameter , ' gefunden werden'))
 				Messstelle <- formatC(as.integer(as.character(Messstelle_nr)), width = 5, flag = "0",  format = "d")
@@ -51,9 +51,9 @@ getDWDhVar <- function(Messstelle, historisch, Parameter, Metadaten=F){
 		}
 		
 		if(is.na(historisch)){
-			stationen_a<-getDWDpubStatHourly(Parameter, historisch=F)
+			stationen_a<-getDWDhourlyStations(Parameter, historisch=F)
 			Messstelle_nr_a<- stationen_a$Stations_id[which(stationen_a$Stationsname==Messstelle | stationen_a$Stations_id==Messstelle)]
-			stationen_h<-getDWDpubStatHourly(Parameter, historisch=T)
+			stationen_h<-getDWDhourlyStations(Parameter, historisch=T)
 			Messstelle_nr_h<- stationen_h$Stations_id[which(stationen_h$Stationsname==Messstelle | stationen_h$Stations_id==Messstelle)]
 			if(as.vector(Messstelle_nr_a)==as.vector(Messstelle_nr_h)){
 				Messstelle<-formatC(as.integer(as.character(Messstelle_nr_a)), width = 5, flag = "0",  format = "d")
@@ -78,12 +78,12 @@ getDWDhVar <- function(Messstelle, historisch, Parameter, Metadaten=F){
 	# kombiniert die beiden Datensätze, wenn historisch=NA:
 	if(is.na(historisch)){
 		
-		aktuell <- try(getDWDhVar(Messstelle, historisch=F, Parameter, Metadaten=FALSE), silent=T)
-		#aktuell <- try(getDWDhVar("Cottbus", historisch=F, "sun", Metadaten=FALSE), silent=T)
+		aktuell <- try(getDWDhourly(Messstelle, historisch=F, Parameter, Metadaten=FALSE), silent=T)
+		#aktuell <- try(getDWDhourly("Cottbus", historisch=F, "sun", Metadaten=FALSE), silent=T)
 		
 		if ('try-error' %in% class(aktuell)) stop(print("keine aktuellen Daten"))
-		historisch <- try(getDWDhVar(Messstelle, historisch=T, Parameter, Metadaten = FALSE), silent)
-		#historisch <- try(getDWDhVar("Cottbus", historisch=T, "sun", Metadaten = FALSE), silent)
+		historisch <- try(getDWDhourly(Messstelle, historisch=T, Parameter, Metadaten = FALSE), silent)
+		#historisch <- try(getDWDhourly("Cottbus", historisch=T, "sun", Metadaten = FALSE), silent)
 		
 		if ('try-error' %in% class(historisch)) stop(print("keine historischen Daten"))
 		

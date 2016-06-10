@@ -1,29 +1,16 @@
-getDWDstations <- function(type="daily"){
-	switch(type,
-				 daily = {
-						#library("XML") # not needed in package
-						DWDstationenURL <- "http://www.dwd.de/sid_gCpjSTGJDhT7rZvV38t3vSJWnnQc1HLyFcD46pL789crw0MpqGrg!295356740!-364271037!1385038953230/bvbw/appmanager/bvbw/dwdwwwDesktop?_nfpb=true&_pageLabel=dwdwww_result_page&portletMasterPortlet_i1gsbDocumentPath=Navigation%2FOeffentlichkeit%2FKlima__Umwelt%2FKlimadaten%2Fkldaten__kostenfrei%2Fstations_C3_BCbersicht__tabelle__node.html%3F__nnn%3Dtrue"
-						Stationen <- readHTMLTable(DWDstationenURL, stringsAsFactors = FALSE, which=7, skip.rows=1, header=TRUE, colClasses = c("character", "character", "character", "character", "numeric", "character", "character", "character", "numeric"))
-						colnames(Stationen) <- sub("\n\n", " ", colnames(Stationen))
-						colnames(Stationen)[6:7] <- c("geoBreite", "geoLaenge")
-						Stationen$"geoBreite" <- sub("°.", ".", Stationen$"geoBreite")
-						Stationen$"geoBreite" <- as.numeric(sub("'", "", Stationen$"geoBreite"))
-						Stationen$"geoLaenge" <- sub("°.", ".", Stationen$"geoLaenge")
-						Stationen$"geoLaenge" <- as.numeric(sub("'", "", Stationen$"geoLaenge"))
-						
-						return(Stationen)
-				 }, 
-			   hourly={
-						colnames_stationen <- as.vector(t(read.table(url("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/precipitation/recent/RR_Stundenwerte_Beschreibung_Stationen.txt", encoding="ISO-8859-1"), nrows = 1)))
-						
-						stationen <- read.fwf(url("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/precipitation/recent/RR_Stundenwerte_Beschreibung_Stationen.txt", encoding="ISO-8859-1"), widths = c(5,9,9,15,12,10,42,23), skip=2, col.names = colnames_stationen, strip.white=T, colClasses=c("character", "character", "character", "integer", "numeric", "numeric", "character", "character"))
-						stationen$von_datum <- as.Date(as.character(stationen$von_datum), format = "%Y%m%d")
-						stationen$bis_datum <- as.Date(as.character(stationen$bis_datum), format = "%Y%m%d")
-						str(stationen)
-						return(head(stationen, -1))
-				 },
-					stop('type must be either "daily" or "hourly')
-	)
+getDWDstations <- function(){
+
+	#library("XML") # not needed in package
+	DWDstationenURL <- "http://www.dwd.de/sid_gCpjSTGJDhT7rZvV38t3vSJWnnQc1HLyFcD46pL789crw0MpqGrg!295356740!-364271037!1385038953230/bvbw/appmanager/bvbw/dwdwwwDesktop?_nfpb=true&_pageLabel=dwdwww_result_page&portletMasterPortlet_i1gsbDocumentPath=Navigation%2FOeffentlichkeit%2FKlima__Umwelt%2FKlimadaten%2Fkldaten__kostenfrei%2Fstations_C3_BCbersicht__tabelle__node.html%3F__nnn%3Dtrue"
+	Stationen <- readHTMLTable(DWDstationenURL, stringsAsFactors = FALSE, which=7, skip.rows=1, header=TRUE, colClasses = c("character", "character", "character", "character", "numeric", "character", "character", "character", "numeric"))
+	colnames(Stationen) <- sub("\n\n", " ", colnames(Stationen))
+	colnames(Stationen)[6:7] <- c("geoBreite", "geoLaenge")
+	Stationen$"geoBreite" <- sub("°.", ".", Stationen$"geoBreite")
+	Stationen$"geoBreite" <- as.numeric(sub("'", "", Stationen$"geoBreite"))
+	Stationen$"geoLaenge" <- sub("°.", ".", Stationen$"geoLaenge")
+	Stationen$"geoLaenge" <- as.numeric(sub("'", "", Stationen$"geoLaenge"))
+	
+	return(Stationen)
 }
 
 
