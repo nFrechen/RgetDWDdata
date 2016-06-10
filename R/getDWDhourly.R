@@ -1,5 +1,13 @@
+list.ftp <- function(url){
+	filenames <- getURL(url, ftp.use.epsv=FALSE, dirlistonly=TRUE)
+	#on windows \r\n has to be replaced by \n
+	filenames <- gsub("\r\n", "\n", filenames)
+	filenames <- strsplit(filenames, "\n")[[1]]
+	return(filenames)
+}
+
 #---------- Stationsnamen herunterladen ------------------
-getDWDhourlyStations <- function(Parameter, historisch) {
+getDWDhourlyStations <- function(Parameter, historisch=F) {
 	
 	Obs<-data.frame(Parameter =c("sun", "air_temperature", "cloudiness", "precipitation", "pressure", "soil_temperature", "wind", "solar"),
 									Dateiname=c("SD_Stundenwerte_Beschreibung_Stationen.txt", "TU_Stundenwerte_Beschreibung_Stationen.txt",
@@ -27,10 +35,11 @@ getDWDhourlyStations <- function(Parameter, historisch) {
 }
 
 #------------------ Dateien listen -------------
-getDWDhourly <- function(Messstelle, historisch, Parameter, Metadaten=F){
+getDWDhourly <- function(Messstelle, historisch=F, Parameter, Metadaten=F){
 	
 	# Parameter-c("wind", "precipitation", "sun", "air_temperature", "pressure", "soil_temperature", "cloudiness")  
-	require("RCurl")
+	
+	#require("RCurl") # has to be loaded in the DESCRIPTION file
 	
 	#------------------- Dateien runterladen ---------
 	
@@ -65,11 +74,11 @@ getDWDhourly <- function(Messstelle, historisch, Parameter, Metadaten=F){
 	#wenn MesstellenID bekannt und historisch TRUE or FALSE!    
 	if(!is.na(historisch)){
 		if(historisch){
-			histoDat<-sort(strsplit(getURL(paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/", Parameter,"/historical/"), dirlistonly = TRUE), "\n")[[1]])
+			histoDat<-sort(list.ftp(url= paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/", Parameter,"/historical/")))
 			histoDatStID<-suppressWarnings(as.numeric(substr(histoDat[], 17, 21)))
 			histoDatStID<-formatC(histoDatStID, width = 5, flag = "0",  format = "d")
 		}else{
-			aktuDat <-strsplit(getURL(paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/", Parameter, "/recent/"), dirlistonly = TRUE), "\n")[[1]]
+			aktuDat <-list.ftp(paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/", Parameter, "/recent/"))
 			aktuDatStID <-suppressWarnings(as.numeric(substr(aktuDat[],  17, 21)))
 			aktuDatStID<-formatC(aktuDatStID, width = 5, flag = "0",  format = "d")
 		}    

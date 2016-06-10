@@ -1,2 +1,3 @@
 exportPattern("^[[:alpha:]]+")
-import(lubridate, XML, EcoHydRology)
+#exportPattern("getDWD|calcET0")
+import(lubridate, XML, EcoHydRology, RCurl)
