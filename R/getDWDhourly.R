@@ -25,17 +25,22 @@ getDWDhourlyStations <- function(Parameter, historisch=F) {
 	colnames_stationen <- as.vector(t(read.table(url(paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/", Parameter,
 																													"/recent/",txt)), nrows = 1)) )
 	
+	stationsURL <- paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/", Parameter, ifelse(historisch, "/historical/", "/recent/"),txt)
 	
-	if (historisch){
-		stationen<- suppressWarnings(head(read.fwf(url(paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/", Parameter,
-																													"/historical/",txt), encoding="ISO-8859-1"),
-																							 widths = c(11,9,9,15,12,10,42,23), skip=2, col.names = colnames_stationen, strip.white=T),-1 ))
-	}else{
-		stationen<- suppressWarnings(head(read.fwf(url(paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/", Parameter,
-																													"/recent/",txt), encoding="ISO-8859-1"),
-																							 widths = c(11,9,9,15,12,10,42,23), skip=2, col.names = colnames_stationen, strip.white=T),-1 ))
-	}
 	
+	text <- head(suppressWarnings(readLines(url(stationsURL, encoding="ISO-8859-1"))), -1)
+	# read station id seperately since it is formatted differently
+	# sometimes it is formattet "          3", sometimes "00003", so we have to reformat it:
+	Stations_id <- gsub("^ *([0-9]*).*", "\\1", text)[c(-1,-2)]
+	# convert it to common format like "00003"
+	Stations_id <- formatC(as.integer(Stations_id), width = 5, flag = "0",  format = "d")
+	# read other text in the file as if the station id in front wasn't there:
+	otherText <- textConnection(gsub("^ *([0-9]*)\ ", "", text, perl=TRUE))
+	stationen <- read.fwf(otherText, widths = c(8,9,15,12,10,42,23),  col.names = colnames_stationen[-1], skip=2, strip.white=T)
+	
+	#combine station id and other text again:
+	stationen <- cbind(Stations_id, stationen)
+
 	return(stationen)
 }
 
@@ -194,3 +199,10 @@ getDWDhourly <- function(Messstelle, historisch=F, Parameter, Metadaten=F){
 	}
 }
 
+
+# some test cases:
+if(FALSE){
+	View(getDWDhourlyStations(Parameter = "air_temperature", historisch = TRUE))
+	View(getDWDhourlyStations(Parameter = "air_temperature", historisch = FALSE))
+	View(getDWDhourlyStations(Parameter = "precipitation", historisch = TRUE))
+}
