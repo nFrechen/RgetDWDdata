@@ -1,9 +1,14 @@
-list.ftp <- function(url){
+list.ftp <- function(url, full.names=FALSE){
 	filenames <- getURL(url, ftp.use.epsv=FALSE, dirlistonly=TRUE)
 	#on windows \r\n has to be replaced by \n
 	filenames <- gsub("\r\n", "\n", filenames)
 	filenames <- strsplit(filenames, "\n")[[1]]
-	return(filenames)
+	if(full.names){
+		return(file.path(url, filenames))
+	}else{
+		return(filenames)	
+	}
+	
 }
 
 #---------- Stationsnamen herunterladen ------------------
@@ -74,13 +79,11 @@ getDWDhourly <- function(Messstelle, historisch=F, Parameter, Metadaten=F){
 	#wenn MesstellenID bekannt und historisch TRUE or FALSE!    
 	if(!is.na(historisch)){
 		if(historisch){
-			histoDat<-sort(list.ftp(url= paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/", Parameter,"/historical/")))
-			histoDatStID<-suppressWarnings(as.numeric(substr(histoDat[], 17, 21)))
-			histoDatStID<-formatC(histoDatStID, width = 5, flag = "0",  format = "d")
-		}else{
-			aktuDat <-list.ftp(paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/", Parameter, "/recent/"))
-			aktuDatStID <-suppressWarnings(as.numeric(substr(aktuDat[],  17, 21)))
-			aktuDatStID<-formatC(aktuDatStID, width = 5, flag = "0",  format = "d")
+			histoDat<-sort(list.ftp(url= paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/", Parameter,"/historical/"), full.names = TRUE))
+			histDataUrl <- histoDat[grep(Messstelle, histoDat)]
+			}else{
+			aktuDat <-list.ftp(paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/", Parameter, "/recent/"), full.names=TRUE)
+			aktDataUrl <- aktuDat[grep(Messstelle, aktuDat)]
 		}    
 	}  
 	
@@ -120,9 +123,9 @@ getDWDhourly <- function(Messstelle, historisch=F, Parameter, Metadaten=F){
 	
 	
 	if(historisch==T){
-		downloadlink <- paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/", Parameter, "/historical/",histoDat[which(histoDatStID==Messstelle)])
-	}else{
-		downloadlink <- paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/", Parameter, "/recent/",aktuDat[which(aktuDatStID==Messstelle)])
+		downloadlink <- histDataUrl
+		}else{
+		downloadlink <- aktDataUrl
 	}
 	
 	# Tempfile erzeugen
