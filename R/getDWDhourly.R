@@ -22,13 +22,14 @@ getDWDhourlyStations <- function(Parameter, historisch=F) {
 	
 	txt<-as.vector(Obs[Obs$Parameter==paste(Parameter),2]) 
 	
-	colnames_stationen <- as.vector(t(read.table(url(paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/", Parameter,
-																													"/recent/",txt)), nrows = 1)) )
-	
 	stationsURL <- paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/hourly/", Parameter, ifelse(historisch, "/historical/", "/recent/"),txt)
+	con <- url(stationsURL, open="r", encoding="ISO-8859-1")
+
+	colnames_stationen <- as.vector(t(read.table(con, nrows = 1)) )
+
+	text <- head(suppressWarnings(readLines(con)), -1)
 	
-	
-	text <- head(suppressWarnings(readLines(url(stationsURL, encoding="ISO-8859-1"))), -1)
+	close(con)
 	# read station id seperately since it is formatted differently
 	# sometimes it is formattet "          3", sometimes "00003", so we have to reformat it:
 	Stations_id <- gsub("^ *([0-9]*).*", "\\1", text)[c(-1,-2)]
