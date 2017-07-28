@@ -11,7 +11,7 @@ getDWDstations <- function(){
 	} 
 	
 	header <- read.table(stationFile, header = FALSE, sep = " ", stringsAsFactors = FALSE, nrows = 1)
-	Stationen <- head(suppressWarnings(read.fwf(stationFile, widths = diff(c(0,12,21,30,45,57,67,108,201)), strip.white=TRUE, stringsAsFactors = FALSE, header=FALSE, skip=2, fileEncoding = "ISO-8859-1", encoding= "ISO-8859-1", col.names = header)), -1) # use head(, -1) to cut away the last row which is incomplete
+	Stationen <- head(suppressWarnings(read.fwf(stationFile, widths = diff(c(0,6,15,24,39,51,61,102,201)), strip.white=TRUE, stringsAsFactors = FALSE, header=FALSE, skip=2, fileEncoding = "ISO-8859-1", encoding= "ISO-8859-1", col.names = header)), -1) # use head(, -1) to cut away the last row which is incomplete
 	Stationen$Stations_id <- formatC(as.numeric(Stationen$Stations_id), width = 5, format = "d", flag = "0")
 	Stationen$von_datum <- as.Date(as.character(Stationen$von_datum), format="%Y%m%d")
 	Stationen$bis_datum <- as.Date(as.character(Stationen$bis_datum), format="%Y%m%d")
