@@ -20,7 +20,7 @@ getDWDstations <- function(){
 
 
 
-getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE){
+getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE, replaceColnames=TRUE){
 	
 	# "Messstelle" muss entweder die 5-stellige Stations-Kennziffer sein oder der Stationsame als character
 	# welche muss entwerder "historisch" oder "aktuell" sein
@@ -89,7 +89,7 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE){
 		filenames <- getURL("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl/historical/", ftp.use.epsv=FALSE, dirlistonly=TRUE)
 		filenames <- gsub("\r\n", "\n", filenames)
 		filenames <- strsplit(filenames, "\n")[[1]]
-		ids <- substr(filenames, 12, 16)
+		ids <- substr(filenames, 15, 19)
 		downloadlink <- paste0("ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl/historical/", filenames[which(ids==Messstelle)])
 	}else{
 		message("\ndownload recent dataset\n")
@@ -116,25 +116,22 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE){
 	
 	if(Metadaten){
 		#---- Metadaten einlesen ----
-		metaFile <- files[grepl(x=files, pattern="Stationsmetadaten_klima_stationen")]
+		metaFile <- files[grepl(x=files, pattern="Metadaten_Geographie")]
 		metaFileCon <- file(metaFile, encoding="ISO-8859-1")
 		metadata <- read.table(metaFileCon, sep=";", header=TRUE, strip.white=TRUE, fill=TRUE)
-		returnData$Metadaten <- cbind(Stationsname=metadata$Stationsname, Online_id=(rep(Messstelle, nrow(metadata))), metadata[,2:4], von=t(as.Date(as.character(metadata[,5]),format="%Y%m%d")), bis=t(as.Date(as.character(metadata[,6]),format="%Y%m%d")), stringsAsFactors=FALSE)
+		metadata$von_datum	= as.Date(as.character(metadata$von_datum),format="%Y%m%d")
+		metadata$bis_datum	= as.Date(as.character(metadata$bis_datum),format="%Y%m%d")
+		returnData$Metadaten <- metadata
 	}
 	
 	#---- Daten einlesen ----
-	datafile <- files[grepl(x=files, pattern="produkt_klima_Tageswerte")]
+	datafile <- files[grepl(x=files, pattern="produkt_klima_tag_")]
 	datafileCon <- file(datafile, encoding="ISO-8859-1")
-	text <- gsub( ",", ";", readLines(datafileCon, warn=FALSE)) # erstmals beobachtet am 2014-05-01 haben die DWD-Daten nicht mehr "," als Trennzeichen, sondern ";". Allerdings sind manche Ueberschriften nich mit ",", daher diese Korrekturzeile
-	close(datafileCon)
+	returnData$Daten <- read.table(datafileCon, sep=";", header=TRUE, strip.white=TRUE, na.strings=-999, as.is=TRUE, fill=TRUE)
 	
-	returnData$Daten <- read.table(textConnection(text), sep=";", header=TRUE, strip.white=TRUE, na.strings=-999, as.is=TRUE, fill=TRUE)
 	
-	# letzte Zeile loeschen und Spalte loeschen
-	returnData$Daten <- returnData$Daten[-nrow(returnData$Daten),-ncol(returnData$Daten)]
-	
-	# Alle Kopfzeilen in Großbuchstaben
-	colnames(returnData$Daten) <- toupper(colnames(returnData$Daten))
+	# letzte Spalte loeschen
+	returnData$Daten <- returnData$Daten[,-ncol(returnData$Daten)]
 	
 	# Datumsspalte von character zu Datum umwandeln
 	returnData$Daten$MESS_DATUM <- as.Date(as.character(returnData$Daten$MESS_DATUM), format="%Y%m%d")
@@ -143,29 +140,32 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE){
 	returnData$Daten$STATIONS_ID <- as.factor(returnData$Daten$STATIONS_ID)
 	
 	if(Metadaten){
-		#---- Fehldaten einlesen ----
-		
-		fehldaten <- files[grepl(x=files, pattern="Protokoll_Fehldaten_klima_stationen")]
-		#returnData$Fehldaten <- readLines(fehldaten)
-		
-		
+
 		#---- Zusatzinformationen einlesen ----
 		
-		weitereDaten <- files[c( -which(files==datafile), -which(files==metaFile),  -which(files==fehldaten))]
+		textfiles <- files[grepl("txt", files)]
+		weitereDaten <- textfiles[c( -which(textfiles==datafile), -which(textfiles==metaFile))]
 		
 		returnData$Zusatzinfo <- NULL
 		
-		for(f in weitereDaten){
-			addFile <- file(f, "r", encoding="ISO-8859-1")
-			text <- gsub( "ISO-8859-1", "UTF-8", readLines(addFile))
-			addData <- readHTMLTable(text, header=FALSE, stringsAsFactors = FALSE, which=1)
-			Neu <- tail(addData, -2)
-			colnames(Neu) <- addData[2,]
-			rownames(Neu) <- NULL
-			returnData$Zusatzinfo[[addData[1,1]]] <- Neu
+		for(i in seq_along(weitereDaten)){
+			addFile <- file(weitereDaten[i], "r", encoding="ISO-8859-1")
+			addData <- read.table(addFile, sep=";", header=TRUE, strip.white=TRUE, na.strings=-999, as.is=TRUE, fill=TRUE)
+			addData <- tail(addData, -1)
+			returnData$Zusatzinfo[[i]] <- addData
+			names(returnData$Zusatzinfo)[i] <- gsub(".txt", "", basename(weitereDaten[i]))
+			
 			close(addFile)
 		}
 	}
+	
+	if(replaceColnames){
+		replacements <- head(unique(data$Zusatzinfo$Metadaten_Parameter_klima_tag_00880[,5:7]),-1)
+		ind_replacements <- na.omit(match(colnames(returnData$Daten), replacements$Parameter))
+		ind_colnames <- na.omit(match(replacements$Parameter, colnames(returnData$Daten)))
+		colnames(returnData$Daten)[ind_colnames] <- replacements$Parameterbeschreibung[ind_replacements]
+	}
+	
 	#---- Temp-Datei loeschen: ----
 	unlink(c(zipfile,files))
 	if(Metadaten){
