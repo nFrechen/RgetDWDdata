@@ -139,7 +139,7 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE, Namen_erse
 	# Sich wiederholende character Strings in Faktoren umwandeln:
 	returnData$Daten$STATIONS_ID <- as.factor(returnData$Daten$STATIONS_ID)
 	
-	if(Metadaten){
+	if(Metadaten | Namen_ersetzen){
 
 		#---- Zusatzinformationen einlesen ----
 		
