@@ -36,6 +36,7 @@ Die Argumente sind:
 
 * `Metadaten =` (logical, default=FALSE), definiert, ob auch Metadaten herunter geladen werden sollen (z.B. Koordinaten der Station); Achtung!: Die Struktur der Rückgabe ändert sich durch diese Option
 
+* `Namen_ersetzen =` (logical, default=TRUE), definiert ob die Spaltennamen durch ausführlichere Bezeichnungen ersetzt werden sollen
 --------
 
 

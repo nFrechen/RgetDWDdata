@@ -20,7 +20,7 @@ getDWDstations <- function(){
 
 
 
-getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE, replaceColnames=TRUE){
+getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE, Namen_ersetzen=TRUE){
 	
 	# "Messstelle" muss entweder die 5-stellige Stations-Kennziffer sein oder der Stationsame als character
 	# welche muss entwerder "historisch" oder "aktuell" sein
@@ -159,7 +159,7 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE, replaceCol
 		}
 	}
 	
-	if(replaceColnames){
+	if(Namen_ersetzen){
 		replacements <- head(unique(data$Zusatzinfo$Metadaten_Parameter_klima_tag_00880[,5:7]),-1)
 		ind_replacements <- na.omit(match(colnames(returnData$Daten), replacements$Parameter))
 		ind_colnames <- na.omit(match(replacements$Parameter, colnames(returnData$Daten)))

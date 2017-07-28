@@ -21,6 +21,9 @@ getDWDdata(Messstelle, historisch=FALSE, Metadaten=FALSE)
 \item{Metadaten}{
 	(logical) Soll der zurückgegebene Datensatz die vom DWD mitgelieferten Metadaten enthalten?
 }
+\item{Namen_ersetzen}{
+	(logical) Sollen die Spaltennamen durch ausführlichere Bezeichnungen ersetzt werden?
+}
 }
 \details{
 Eine Beschreibung der Einheiten und Messprozeduren findet sich \href{ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl/recent/BESCHREIBUNG_obsgermany_climate_daily_kl_recent_de.pdf}{hier (Deutsch)} oder \href{ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl/recent/DESCRIPTION_obsgermany_climate_daily_kl_recent_en.pdf}{hier (Englisch)}. Weitere Informationen finden sich in den Zusatzinfos, die mit den Datensätzen heruntergeladen werden können (\code{Metadaten=TRUE}).
@@ -35,6 +38,8 @@ Eine Beschreibung der Einheiten und Messprozeduren findet sich \href{ftp://ftp-c
 \references{
 Quelle der Daten: \href{ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl}{ftp://ftp-cdc.dwd.de}
 
+DWD Climate Data Center (CDC): Historische tägliche Stationsbeobachtungen (Temperatur, Druck, Niederschlag, Sonnenscheindauer, etc.) für Deutschland, Version v005, 2017.
+
 
 Diese Funktion wurde inspiriert von der Funktion \code{get_usgs_gage} des \code{EcoHydRology} Pakets.
 }
@@ -42,7 +47,7 @@ Diese Funktion wurde inspiriert von der Funktion \code{get_usgs_gage} des \code{
 Nanu Frechen, Tobias Recke
 }
 \note{
-Bei einigen Messstationen kann die Datenstruktur inkonsistent sein und deshalb nicht von dieser Funktion eingelesen werden. Darüber hinaus ändert der DWD manchmal seine Datenstrukturen, was ein Anpassen dieser Funktion erfordert. Wenn Sie etwas entdecken informieren sie den Maintainer dieses Pakets (\href{mailto: nanu.frechen@b-tu.de}{nanu.frechen@b-tu.de}).
+Bei einigen Messstationen kann die Datenstruktur inkonsistent sein und deshalb nicht von dieser Funktion eingelesen werden. Darüber hinaus ändert der DWD manchmal seine Datenstrukturen, was ein Anpassen dieser Funktion erfordert. Wenn Sie etwas entdecken informieren sie den Maintainer dieses Pakets (\href{mailto: nanu.frechen@me.com}{nanu.frechen@me.com}).
 Die Stationen Aachen, Berlin-Dahlem (LFAG), Karlsruhe, Leuchtturm Alte Weser und Rostock-Warnemünde sind bekannt Fehler beim herunterladen zu erzeugen (siehe Beispiel in \code{\link{getDWDstations}}).
 }
 
