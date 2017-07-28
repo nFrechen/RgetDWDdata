@@ -8,7 +8,7 @@ Lädt Klimadaten von den Servern des DWD herunter
 Der Deutsche Wetterdienst (DWD) stellt unter \href{ftp://ftp-cdc.dwd.de/pub/CDC/observations_germany/climate/daily/kl}{ftp://ftp-cdc.dwd.de} eine Reihe von Klimadaten (Tagesdaten) zur Verfügung. Diese können mit dieser Funktion heruntergeladen und in R importiert werden.
 }
 \usage{
-getDWDdata(Messstelle, historisch=FALSE, Metadaten=FALSE)
+getDWDdata(Messstelle, historisch=FALSE, Metadaten=FALSE, Namen_ersetzen=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
