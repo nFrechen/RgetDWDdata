@@ -52,8 +52,8 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE, Namen_erse
 	
 	# kombiniert die beiden Datensaetze, wenn historisch=NA:
 	if(is.na(historisch)){
-		aktuell <- getDWDdata(Messstelle, historisch=FALSE, Metadaten = TRUE)
-		historisch <- getDWDdata(Messstelle, historisch=TRUE, Metadaten = FALSE)
+		aktuell <- getDWDdata(Messstelle, historisch=FALSE, Metadaten = TRUE, Namen_ersetzen = Namen_ersetzen)
+		historisch <- getDWDdata(Messstelle, historisch=TRUE, Metadaten = FALSE, Namen_ersetzen = Namen_ersetzen)
 		
 		# historisch und aktuell zusammenfuegen
 		
@@ -114,7 +114,7 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE, Namen_erse
 	
 	returnData <- NULL
 	
-	if(Metadaten){
+	if(Metadaten | Namen_ersetzen){
 		#---- Metadaten einlesen ----
 		metaFile <- files[grepl(x=files, pattern="Metadaten_Geographie")]
 		metaFileCon <- file(metaFile, encoding="ISO-8859-1")
@@ -160,7 +160,7 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE, Namen_erse
 	}
 	
 	if(Namen_ersetzen){
-		replacements <- head(unique(data$Zusatzinfo$Metadaten_Parameter_klima_tag_00880[,5:7]),-1)
+		replacements <- head(unique(returnData$Zusatzinfo$Metadaten_Parameter_klima_tag[,5:7]),-1)
 		ind_replacements <- na.omit(match(colnames(returnData$Daten), replacements$Parameter))
 		ind_colnames <- na.omit(match(replacements$Parameter, colnames(returnData$Daten)))
 		colnames(returnData$Daten)[ind_colnames] <- replacements$Parameterbeschreibung[ind_replacements]

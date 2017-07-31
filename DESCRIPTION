@@ -1,7 +1,7 @@
 Package: RgetDWDdata
 Type: Package
 Title: R functions to download data from the DWD (German Weather Service)
-Version: 0.2
+Version: 0.2.3
 Date: 2015-12-09
 Author: Nanu Frechen, Egbert Gassert, Sabine Schümberg, Ina Pohle, Tobias Recke
 Maintainer: Nanu Frechen <nanu.frechen@me.com>
