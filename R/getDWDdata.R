@@ -8,10 +8,12 @@ getDWDstations <- function(){
 	if(dexit!=0){
 		message("Sorry, the station list could not be downloaded from ", DWDstationenURL)
 		return()
-	} 
+	}
 	
-	header <- read.table(stationFile, header = FALSE, sep = " ", stringsAsFactors = FALSE, nrows = 1)
-	Stationen <- head(suppressWarnings(read.fwf(stationFile, widths = diff(c(0,6,15,24,39,51,61,102,201)), strip.white=TRUE, stringsAsFactors = FALSE, header=FALSE, skip=2, fileEncoding = "ISO-8859-1", encoding= "ISO-8859-1", col.names = header)), -1) # use head(, -1) to cut away the last row which is incomplete
+	col_names <- unlist(na.omit(read_table(stationFile, locale = locale(encoding = "windows-1252"), comment="-", n_max=1, col_names=F)), use.names = F)
+	
+	Stationen <- na.omit(read_table(stationFile, locale = locale(encoding = "windows-1252"), comment="-", skip=4, col_names=col_names))
+	
 	Stationen$Stations_id <- formatC(as.numeric(Stationen$Stations_id), width = 5, format = "d", flag = "0")
 	Stationen$von_datum <- as.Date(as.character(Stationen$von_datum), format="%Y%m%d")
 	Stationen$bis_datum <- as.Date(as.character(Stationen$bis_datum), format="%Y%m%d")
