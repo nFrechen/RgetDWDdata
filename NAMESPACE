@@ -1,2 +1,6 @@
 exportPattern("^[[:alpha:]]+")
 import(lubridate, XML, RCurl)
+
+importFrom("stats", "na.omit")
+importFrom("utils", "download.file", "head", "read.table", "tail", "unzip")
+importFrom("readr", "read_table", "locale")
