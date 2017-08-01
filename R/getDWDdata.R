@@ -10,9 +10,9 @@ getDWDstations <- function(){
 		return()
 	}
 	
-	col_names <- unlist(na.omit(read_table(stationFile, locale = locale(encoding = "windows-1252"), comment="-", n_max=1, col_names=F)), use.names = F)
+	col_names <- unlist(na.omit(suppressMessages(read_table(stationFile, locale = locale(encoding = "windows-1252"), comment="-", n_max=1, col_names=F))), use.names = F)
 	
-	Stationen <- na.omit(read_table(stationFile, locale = locale(encoding = "windows-1252"), comment="-", skip=4, col_names=col_names))
+	Stationen <- na.omit(suppressMessages(read_table(stationFile, locale = locale(encoding = "windows-1252"), comment="-", skip=4, col_names=col_names)))
 	
 	Stationen$Stations_id <- formatC(as.numeric(Stationen$Stations_id), width = 5, format = "d", flag = "0")
 	Stationen$von_datum <- as.Date(as.character(Stationen$von_datum), format="%Y%m%d")
@@ -128,12 +128,12 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE, Namen_erse
 	
 	#---- Daten einlesen ----
 	datafile <- files[grepl(x=files, pattern="produkt_klima_tag_")]
-	datafileCon <- file(datafile, encoding="ISO-8859-1")
-	returnData$Daten <- read.table(datafileCon, sep=";", header=TRUE, strip.white=TRUE, na.strings=-999, as.is=TRUE, fill=TRUE)
-	
+
+	returnData$Daten <- suppressMessages(read_delim(datafile, delim = ";", locale = locale(encoding="windows-1252"), na = "-999", trim_ws = T))
 	
 	# letzte Spalte loeschen
-	returnData$Daten <- returnData$Daten[,-ncol(returnData$Daten)]
+	returnData$Daten <- select(returnData$Daten, -eor)
+	
 	
 	# Datumsspalte von character zu Datum umwandeln
 	returnData$Daten$MESS_DATUM <- as.Date(as.character(returnData$Daten$MESS_DATUM), format="%Y%m%d")
@@ -164,7 +164,7 @@ getDWDdata <- function(Messstelle, historisch=FALSE, Metadaten=FALSE, Namen_erse
 	if(Namen_ersetzen){
 		replacements <- head(unique(returnData$Zusatzinfo$Metadaten_Parameter_klima_tag[,5:7]),-1)
 		ind_replacements <- na.omit(match(colnames(returnData$Daten), replacements$Parameter))
-		ind_colnames <- na.omit(match(replacements$Parameter, colnames(returnData$Daten)))
+		ind_colnames <- sort(na.omit(match(replacements$Parameter, colnames(returnData$Daten))))
 		colnames(returnData$Daten)[ind_colnames] <- replacements$Parameterbeschreibung[ind_replacements]
 	}
 	
