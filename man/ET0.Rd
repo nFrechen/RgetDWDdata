@@ -4,7 +4,8 @@
 \description{
 Berechnet die Grasreferenzverdunstung (ET0) nach \href{http://www.dwa.de/dwa/shop/shop.nsf/Produktanzeige?openform&produktid=P-DWAA-785JW8}{ATV-DVWK-Merblatt 504}}
 \usage{
-calcET0(temp, date=NA, doy=NA, R_G=NA, sunshine=NA, U, v, v_height=2, latitude, albedo=0.23, gamma=0.65, ice = FALSE)
+calcET0(temp, date=NA, doy=NA, R_G=NA, sunshine=NA, U, v, v_height=2, 
+latitude, albedo=0.23, gamma=0.65, ice = FALSE)
 }
 \arguments{
   \item{temp}{Lufttemperatur als Tagesmittel in °C}
@@ -76,13 +77,22 @@ Breitengrad <- tail(Cottbus$Metadaten$Geogr.Breite, 1)
 Niederschlag <- Cottbus$Daten$NIEDERSCHLAGSHOEHE
 
 # Grasreferenzverdunstung berechnen:
-ET0 <- calcET0(temp = Temp, date = Datum, sunshine = Sonnenschein, U = U, v = Wind, v_height = Wind_h, latitude = Breitengrad)
+ET0 <- calcET0(temp = Temp, date = Datum, sunshine = Sonnenschein, 
+U = U, v = Wind, v_height = Wind_h, latitude = Breitengrad)
+
 # Zeitreihe für das letze Jahr
 index <- (length(Datum)-365):length(Datum)
-plot(Datum[index], ET0[index], type="l", main="Grasreferenzverdunstung im Jahresverlauf")
-plot(Datum[index], Niederschlag[index]-ET0[index], type="l", main="Klimatische Wasserbilanz")
+
+plot(Datum[index], ET0[index], type="l", 
+main="Grasreferenzverdunstung im Jahresverlauf")
+
+plot(Datum[index], Niederschlag[index]-ET0[index], type="l", 
+main="Klimatische Wasserbilanz")
 
 # Streudiagriamm für die gesamte Messperiode
-plot(yday(Datum), ET0, pch=20, cex=0.2, main="Grasreferenzverdunstung im Jahresverlauf")
-plot(yday(Datum), Niederschlag-ET0, pch=20, cex=0.2, main="Klimatische Wasserbilanz")
+plot(yday(Datum), ET0, pch=20, cex=0.2, 
+main="Grasreferenzverdunstung im Jahresverlauf")
+
+plot(yday(Datum), Niederschlag-ET0, pch=20, cex=0.2, 
+main="Klimatische Wasserbilanz")
 }

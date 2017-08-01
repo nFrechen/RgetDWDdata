@@ -39,7 +39,8 @@ print(Stationen[order(Stationen$"Länge Messreihe (Jahre)"),])
 
 if(interactive()){
 	# aktuelle Daten aller Stationen herunterladen:
-	readline("Wollen Sie wirklich Daten aller Stationen herunterladen (dies kann eine Weile dauern [Enter/Esc]")
+	readline("Wollen Sie wirklich Daten aller Stationen herunterladen 
+(dies kann eine Weile dauern [Enter/Esc]")
 	DWDdata <- list()
 	for(i in (1:length(Stationen$Stationsname))){
 		DWDdata[[Stationen$Stationsname[i]]] <- 
@@ -64,7 +65,8 @@ if(require("maps")){
 	map("world", regions = "Germany")
 	points(Stationen[,6:5], pch=20, cex=0.5)
 	if(interactive())
-		Stationen[ identify(Stationen[,6:5], label=Stationen$Stationsname, n=1, col="red"), ]
+		Stationen[ identify(Stationen[,6:5], 
+		label=Stationen$Stationsname, n=1, col="red"), ]
 }
 
 }
